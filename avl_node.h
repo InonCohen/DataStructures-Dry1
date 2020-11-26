@@ -14,8 +14,8 @@ private:
     int height;
 
 public:
+    avlNode() = default;
     avlNode(const T &value);
-    avlNode *avlNode(const avlNode &avlNode);
     ~avlNode() = default;
     avlNode *getLeft();
     avlNode *getRight();

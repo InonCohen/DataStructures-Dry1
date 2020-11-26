@@ -49,5 +49,5 @@ void avlNode<T>::setParent(avlNode<T>* new_parent) {
 
 template <class T>
 void avlNode<T>::print() const {
-    std::cout << data_ << std::endl;
+    std::cout << data << std::endl;
 }
