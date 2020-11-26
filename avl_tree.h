@@ -3,23 +3,35 @@
 
 #include "avl_node.h"
 
+
+typedef enum avlTreeResult_t {
+    AVL_TREE_OUT_OF_MEMORY,
+    AVL_TREE_INVALID_INPUT,
+    AVL_TREE_SUCCESS,
+    AVL_TREE_FAILURE
+} avlTreeResult_t;
+
+
 template <class T>
 class avlTree
 {
 private:
     avlNode<T> *root;
 
+    avlTreeResult_t insertAvlNode(avlNode<T>* root, avlNode<T>* new_node);
+
 public:
     avlTree() = default;
     ~avlTree();
 
-    bool insert(const T &value);
-    avlNode<T> *GetRoot() const;
+    avlTreeResult_t insert(const T &value);
+    void treeBalance(avlNode<T>* root);
 
     // void rotateLeft(avlNode<T> *root);
     // void rotateRight(avlNode<T> *root);
 
     avlNode<T> *getRoot() const { return this->root; }
+
 
     template <class Func>
     void inOrder(avlNode<T> *root, Func function) const; // Left, this, Right
@@ -35,7 +47,7 @@ public:
 
 
 template <class T>
-avlNode<T> find(avlNode<T> *root, const T &value);
+avlNode<T>* find(avlNode<T> *root, const T &value);
 
 template <class T>
 int getHeight(avlNode<T> *root);
