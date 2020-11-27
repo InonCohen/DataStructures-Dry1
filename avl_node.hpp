@@ -55,6 +55,11 @@ void avlNode<T>::setParent(avlNode<T>* new_parent) {
 }
 
 template <class T>
+bool avlNode<T>::isLeftChild() {
+    return this->getParent()->getLeft() == this;
+}
+
+template <class T>
 void avlNode<T>::setHeight() {
     int left = this->getLeft() ? this->getLeft()->getHeight() : -1;
     int right = this->getRight() ? this->getRight()->getHeight() : -1;

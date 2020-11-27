@@ -28,6 +28,7 @@ public:
     void setHeight();
     void print() const;
     int getHeight();
+    bool isLeftChild();
 };
 
 

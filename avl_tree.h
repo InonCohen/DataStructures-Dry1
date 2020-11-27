@@ -18,12 +18,14 @@ private:
     avlNode<T> *root;
 
     avlTreeResult_t insertAvlNode(avlNode<T> *root, avlNode<T> *new_node);
+    avlTreeResult_t removeAvlNode(avlNode<T> *root, avlNode<T> *new_node);
 
 public:
     avlTree();
     ~avlTree();
 
     avlTreeResult_t insert(const T &value);
+    avlTreeResult_t remove(const T &value);
     void treeBalance(avlNode<T> *root);
 
     void rotateLeft(avlNode<T> *root);
@@ -39,6 +41,10 @@ public:
     void rootUpdate(avlNode<T>* newroot);
 
     void recursiveSetHeight(avlNode<T> *node);
+    void removeLeaf(avlNode<T> *node);
+    void removeNodeOneChild(avlNode<T> *node, bool is_right_child);
+    void eraseAndBalance(avlNode<T> *node);
+    avlNode<T>* createNewSubTree(avlNode<T>* node);
 };
 
 template <class T>

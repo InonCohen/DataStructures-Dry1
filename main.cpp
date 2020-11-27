@@ -24,7 +24,8 @@ int main(int, char **)
     tree.insert(14);
     tree.insert(12);
     tree.insert(13);
-    tree.inOrder(tree.getRoot(), print);
+    // tree.inOrder(tree.getRoot(), print);
+    tree.remove(13);
     // std::cout << "DONE" << std::endl;
     // std::cout << tree.getRoot()->getValue() << std::endl;
     // std::cout << "HEY1" << std::endl;
@@ -33,11 +34,11 @@ int main(int, char **)
     // tree.postOrder(tree.getRoot(), print);
     // std::cout << std::endl;
     // tree.inOrder(tree.getRoot(), print);
-    std::cout << std::endl;
+    // std::cout << std::endl;
     // tree.preOrder(tree.getRoot(), print);
     // std::cout << std::endl;
 
-    std::cout << "HEY2" << std::endl;
+    // std::cout << "HEY2" << std::endl;
     // tree.postOrder(tree.getRoot(), printBF);
     // std::cout << std::endl;
     // tree.inOrder(tree.getRoot(), printBF);
@@ -51,7 +52,7 @@ int main(int, char **)
     tree.inOrder(tree.getRoot(), printHeight);
     std::cout << std::endl;
     // tree.preOrder(tree.getRoot(), printHeight);
-    std::cout << std::endl;
+    // std::cout << std::endl;
 
     std::cout << tree.getRoot()->getValue() << std::endl;
     std::cout << tree.getRoot()->getRight()->getValue() << std::endl;

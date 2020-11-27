@@ -30,9 +30,9 @@ void printHeight(avlNode<T> *root)
 }
 
 template <class T>
-void deleteNode(avlNode<T> *root)
+void deleteNode(avlNode<T> *node)
 {
-    delete root;
+    delete node;
 }
 
 template <class T>
@@ -74,6 +74,109 @@ avlTreeResult_t avlTree<T>::insert(const T &value)
     treeBalance(new_node);
     return AVL_TREE_SUCCESS;
 }
+
+template <class T>
+avlTreeResult_t avlTree<T>::remove(const T &value)
+{
+
+    if (!root)
+    { //Tree is empty
+        return AVL_TREE_INVALID_INPUT;
+    }
+
+    avlNode<T> *node_to_remove = find(this->root, value);
+
+    if (!node_to_remove)
+    {
+        return AVL_TREE_FAILURE;
+    }
+
+    if (node_to_remove->isLeftChild())
+    {
+        node_to_remove->getParent()->setLeft(createNewSubTree(node_to_remove));
+        return AVL_TREE_SUCCESS;
+    }
+    node_to_remove->getParent()->setRight(createNewSubTree(node_to_remove));
+
+    return AVL_TREE_SUCCESS;
+}
+
+// template <class T>
+// void avlTree<T>::removeNodeOneChild(avlNode<T> *node, bool is_right_child)
+// {
+//     if (node_to_remove->isLeftChild())
+//     {
+//         if (is_right_child)
+//             node_to_remove->getParent()->setLeft(node_to_remove->getRight());
+//         else
+//             node_to_remove->getParent()->setLeft(node_to_remove->getLeft());
+//     }
+//     else
+//     {
+//         node_to_remove->getParent()->setRight(node_to_remove->getRight());
+//     }
+//     this->eraseAndBalance(node);
+// }
+
+template <class T>
+avlNode<T> *avlTree<T>::createNewSubTree(avlNode<T> *node)
+{
+    if ((!node->getRight()) && (!node->getLeft()))
+    {
+        return NULL;
+    }
+    if ((node->getRight()) && (!node->getLeft()))
+    {
+        return node->getRight();
+    }
+    if ((!node->getRight()) && (node->getLeft()))
+    {
+        return node->getLeft();
+    }
+    avlNode<T> *new_parent = node->getRight();
+    while (new_parent->getLeft())
+    {
+        new_parent = new_parent->getLeft();
+    }
+    new_parent->setLeft(node->getLeft());
+    avlNode<T> *height_calc_node = new_parent;
+    while (height_calc_node->getParent() != node->getRight())
+    {
+        height_calc_node->setHeight();
+        height_calc_node = height_calc_node->getParent();
+    }
+    height_calc_node->setParent(NULL);
+    deleteNode(node);
+    treeBalance(new_parent);
+    return height_calc_node;
+}
+
+// template <class T>
+// void avlTree<T>::eraseAndBalance(avlNode<T> *node)
+// {
+//     avlNode<T> *node_parent = node->getParent();
+//     deleteNode(node);
+//     treeBalance(node_parent);
+// }
+
+// template <class T>
+// void avlTree<T>::removeLeaf(avlNode<T> *node)
+// {
+//     if (node->getParent() == NULL)
+//     {
+//         deleteNode(node);
+//         this->root = NULL;
+//     }
+//     if (node->isLeftChild())
+//     {
+//         node->getParent()->setLeft(NULL);
+//     }
+//     else
+//     {
+//         node->getParent()->setRight(NULL);
+//     }
+//     this->eraseAndBalance(node);
+// }
 
 template <class T>
 void avlTree<T>::rootUpdate(avlNode<T> *newroot)
@@ -171,7 +274,7 @@ void avlTree<T>::rotateLeft(avlNode<T> *sub_root)
     }
     else
     {
-        if (sub_root->getParent()->getLeft() == sub_root)
+        if (sub_root->isLeftChild())
         {
             sub_root->getParent()->setLeft(newroot);
         }
@@ -209,7 +312,7 @@ void avlTree<T>::rotateRight(avlNode<T> *sub_root)
     }
     else
     {
-        if (sub_root->getParent()->getLeft() == sub_root)
+        if (sub_root->isLeftChild())
         {
             sub_root->getParent()->setLeft(newroot);
         }
