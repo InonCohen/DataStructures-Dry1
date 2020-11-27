@@ -25,6 +25,10 @@ public:
     void setLeft(avlNode<T> *new_left);
     void setRight(avlNode<T> *new_right);
     void setParent(avlNode<T> *new_parent);
+    void setHeight();
     void print() const;
+    int getHeight();
 };
+
+
 #endif

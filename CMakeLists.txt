@@ -4,7 +4,7 @@ project(Wet1 VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-add_executable(Wet1 main.cpp)
+add_executable(main.cpp, avl_tree.cpp, avl_node.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
