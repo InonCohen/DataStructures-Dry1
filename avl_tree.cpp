@@ -8,6 +8,14 @@ void deleteNode(avlNode<T> *root)
 }
 
 template <class T>
+avlTree<T>::~avlTree()
+{
+    if (!root)
+        return;
+    postOrder(root, deleteNode);
+}
+
+template <class T>
 avlTreeResult_t avlTree<T>::insert(const T &value)
 {
     avlNode<T> *new_node = new avlNode<T>(value);
@@ -61,21 +69,22 @@ avlTreeResult_t avlTree<T>::insertAvlNode(avlNode<T> *root, avlNode<T> *new_node
 
 // AVL balancing algorithm
 template <class T>
-void avlTree<T>::treeBalance(avlNode<T>* root) {
+void avlTree<T>::treeBalance(avlNode<T> *root)
+{
     if (!root)
         return;
-        
+
     int balance = getBF(root);
     if (balance > 1)
     {                                           // left tree unbalanced
-        if (BalanceFactor(root->GetLeft()) < 0) // right child of left tree is the cause
-            RotateLeft(root->GetLeft());        // double rotation required
+        if (BalanceFactor(root->getLeft()) < 0) // right child of left tree is the cause
+            RotateLeft(root->getLeft());        // double rotation required
         RotateRight(root);
     }
     else if (balance < -1)
     {                                            // right tree unbalanced
-        if (BalanceFactor(root->GetRight()) > 0) // left child of right tree is the cause
-            RotateRight(root->GetRight());
+        if (BalanceFactor(root->getRight()) > 0) // left child of right tree is the cause
+            RotateRight(root->getRight());
         RotateLeft(root);
     }
     if (root->getParent())
@@ -83,12 +92,54 @@ void avlTree<T>::treeBalance(avlNode<T>* root) {
 }
 
 template <class T>
-avlTree<T>::~avlTree()
-{
-    if (!root)
-        return;
-    postOrder(root, deleteNode);
+void avlTree<T>::rotateLeft (avlNode<T>* root) {
+  avlNode<T>* newroot = root->getRight();
+  root->setRight(newroot->getLeft());
+  newroot->setLeft(root);
+
+  if( root->getParent() == NULL ) {
+    root = newroot;
+    newroot->setParent(NULL);
+  }
+  else {
+    if( root->getParent()->getLeft() == root ) {
+      root->getParent()->setLeft(newroot);
+    }
+    else {
+      root->getParent()->setRight(newroot);
+    }
+    newroot->setParent(root->getParent());
+  }
+  root->setParent(newroot);
 }
+
+template <class T>
+void avlTree<T>::rotateRight(avlNode<T>* root) {
+  // Rotate node
+  avlNode<T>* newroot = root->getLeft();
+  root->setLeft(newroot->getRight());
+  newroot->setRight(root);
+
+  // Adjust tree
+  if( root->getParent() == NULL ) {
+    root = newroot;
+    newroot->setParent(NULL);
+  }
+  else {
+    if( root->getParent()->getLeft() == root ) {
+      root->getParent()->setLeft(newroot);
+    }
+    else {
+      root->getParent()->setRight(newroot);
+    }
+    newroot->setParent(root->getParent());
+  }
+
+  root->setParent(newroot);
+}
+
+
+
 
 template <class T>
 avlNode<T> *find(avlNode<T> *root, const T &value)

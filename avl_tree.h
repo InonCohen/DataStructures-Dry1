@@ -27,8 +27,8 @@ public:
     avlTreeResult_t insert(const T &value);
     void treeBalance(avlNode<T>* root);
 
-    // void rotateLeft(avlNode<T> *root);
-    // void rotateRight(avlNode<T> *root);
+    void rotateLeft(avlNode<T> *root);
+    void rotateRight(avlNode<T> *root);
 
     avlNode<T> *getRoot() const { return this->root; }
 
