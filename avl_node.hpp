@@ -60,6 +60,24 @@ bool avlNode<T>::isLeftChild() {
 }
 
 template <class T>
+void avlNode<T>::copyFrom(avlNode<T>* node) 
+{
+    this->setRight(node->getRight());
+    this->setLeft(node->getLeft());
+    if (node->getParent())
+    {
+        if (node->isLeftChild())
+        {
+            node->getParent()->setLeft(this);
+        }
+        else
+        {
+            node->getParent()->setRight(this);
+        }
+    }
+}
+
+template <class T>
 void avlNode<T>::setHeight() {
     int left = this->getLeft() ? this->getLeft()->getHeight() : -1;
     int right = this->getRight() ? this->getRight()->getHeight() : -1;

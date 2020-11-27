@@ -29,6 +29,8 @@ public:
     void print() const;
     int getHeight();
     bool isLeftChild();
+
+    void copyFrom(avlNode<T>* node);
 };
 
 
