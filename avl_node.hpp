@@ -3,64 +3,71 @@
 
 #include "avl_node.h"
 
-
 template <class T>
-avlNode<T>::avlNode(const T &value) : data(value), left(NULL), right(NULL), parent(NULL) {
+avlNode<T>::avlNode(const T &value) : data(value), left(NULL), right(NULL), parent(NULL)
+{
 }
 
-
 template <class T>
-avlNode<T>* avlNode<T>::getLeft() {
+avlNode<T> *avlNode<T>::getLeft()
+{
     return this->left;
 }
 
 template <class T>
-avlNode<T>* avlNode<T>::getRight() {
+avlNode<T> *avlNode<T>::getRight()
+{
     return this->right;
 }
 
 template <class T>
-avlNode<T>* avlNode<T>::getParent() {
+avlNode<T> *avlNode<T>::getParent()
+{
     return this->parent;
 }
 
 template <class T>
-T& avlNode<T>::getValue() {
+T &avlNode<T>::getValue()
+{
     return this->data;
 }
 
 template <class T>
-const T avlNode<T>::getValue() const {
+const T avlNode<T>::getValue() const
+{
     return this->data;
 }
 
-
 template <class T>
-void avlNode<T>::setLeft(avlNode<T>* new_left) {
+void avlNode<T>::setLeft(avlNode<T> *new_left)
+{
     if (new_left)
         new_left->setParent(this);
     this->left = new_left;
 }
 
 template <class T>
-void avlNode<T>::setRight(avlNode<T>* new_right) {
+void avlNode<T>::setRight(avlNode<T> *new_right)
+{
     if (new_right)
         new_right->setParent(this);
     this->right = new_right;
 }
 
 template <class T>
-void avlNode<T>::setParent(avlNode<T>* new_parent) {
+void avlNode<T>::setParent(avlNode<T> *new_parent)
+{
     this->parent = new_parent;
 }
 
 template <class T>
-bool avlNode<T>::isLeftChild() {
+bool avlNode<T>::isLeftChild()
+{
     return this->getParent()->getLeft() == this;
 }
 
 template <class T>
-void avlNode<T>::copyFrom(avlNode<T>* node) 
+void avlNode<T>::copyFrom(avlNode<T> *node)
 {
     this->setRight(node->getRight());
     this->setLeft(node->getLeft());
@@ -75,17 +82,76 @@ void avlNode<T>::copyFrom(avlNode<T>* node)
             node->getParent()->setRight(this);
         }
     }
+    else
+    {
+        this->setParent(NULL);
+    }
 }
 
 template <class T>
-void avlNode<T>::setHeight() {
+void avlNode<T>::swapWithChild(avlNode<T> *node, bool is_right)
+{
+    // node is either right or left child of this
+    avlNode<T> *temp_right = node->getRight();
+    avlNode<T> *temp_left = node->getLeft();
+    if (is_right)
+    {
+        // std::cout << "Is RIGHT!" << std::endl;
+        node->setLeft(this->getLeft());
+        if (this->getParent())
+        {
+            if (this->isLeftChild())
+            {
+                this->getParent()->setLeft(node);
+            }
+            else
+            {
+                this->getParent()->setRight(node);
+            }
+        }
+        else
+        {
+            node->setParent(NULL);
+        }
+        node->setRight(this);
+        this->setRight(temp_right);
+        this->setLeft(temp_left);
+    }
+    else
+    {
+        node->setRight(this->getRight());
+        if (this->getParent())
+        {
+            if (this->isLeftChild())
+            {
+                this->getParent()->setLeft(node);
+            }
+            else
+            {
+                this->getParent()->setRight(node);
+            }
+        }
+        else
+        {
+            node->setParent(NULL);
+        }
+        node->setLeft(this);
+        this->setRight(temp_right);
+        this->setLeft(temp_left);
+    }
+}
+
+template <class T>
+void avlNode<T>::setHeight()
+{
     int left = this->getLeft() ? this->getLeft()->getHeight() : -1;
     int right = this->getRight() ? this->getRight()->getHeight() : -1;
     this->height = 1 + ((left > right) ? left : right);
 }
 
 template <class T>
-void avlNode<T>::print() const {
+void avlNode<T>::print() const
+{
     std::cout << data << std::endl;
 }
 

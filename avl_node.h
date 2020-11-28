@@ -31,6 +31,7 @@ public:
     bool isLeftChild();
 
     void copyFrom(avlNode<T>* node);
+    void swapWithChild(avlNode<T>* node, bool is_right);
 };
 
 

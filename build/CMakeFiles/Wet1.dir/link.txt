@@ -1,1 +1,0 @@
-/usr/local/bin/g++  -g  -rdynamic CMakeFiles/Wet1.dir/main.cpp.o  -o Wet1 
