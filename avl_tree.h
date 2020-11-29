@@ -38,6 +38,7 @@ public:
     void preOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const; // this, Left, Right
 
     void postOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const; // Left, Right, this
+    // void postOrder(avlNode<T> *root, void (*function)(avlNode<T> *, int* ));
     
     avlNode<T>* findNewRoot(avlNode<T> *newroot);
     void rootUpdate(avlNode<T>* newroot);

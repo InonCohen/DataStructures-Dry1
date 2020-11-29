@@ -12,7 +12,7 @@ typedef enum StatusType_t
     FAILURE
 } StatusType_t;
 
-class avlTree
+class courseManager
 {
 private:
     avlNode<T> *root;

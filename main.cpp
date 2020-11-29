@@ -4,6 +4,8 @@
 int main(int, char **)
 {
     avlTree<int> tree;
+    tree.inOrder(tree.getRoot(), print);
+    std::cout << std::endl;
     tree.insert(10);
     tree.insert(1);
 
@@ -26,9 +28,11 @@ int main(int, char **)
     tree.insert(14);
     tree.insert(12);
     tree.insert(13);
+    tree.insert(13);
+    tree.insert(13);
+    tree.insert(1666);
     tree.inOrder(tree.getRoot(), print);
     std::cout << std::endl;
-    
     tree.remove(13);
     std::cout << std::endl;
     tree.inOrder(tree.getRoot(), print);
@@ -36,9 +40,20 @@ int main(int, char **)
     tree.remove(13);
     tree.inOrder(tree.getRoot(), print);
     std::cout << std::endl;
+    tree.inOrder(tree.getRoot(), printHeight);
+    std::cout << std::endl;
+
+
+    tree.inOrder(tree.getRoot(), printBF);
+    std::cout << std::endl;
+
+    std::cout << tree.getRoot()->getValue() << std::endl;
+    std::cout << tree.getRoot()->getRight()->getValue() << std::endl;
+    std::cout << tree.getRoot()->getLeft()->getValue() << std::endl;
     tree.remove(15);
     tree.inOrder(tree.getRoot(), print);
     std::cout << std::endl;
+    return 0;
     tree.remove(14);
     tree.inOrder(tree.getRoot(), print);
     std::cout << std::endl;
@@ -62,6 +77,12 @@ int main(int, char **)
     tree.inOrder(tree.getRoot(), print);
     std::cout << "removed 21" << std::endl;
     tree.remove(22);
+    tree.inOrder(tree.getRoot(), print);
+    std::cout << std::endl;
+    tree.insert(13);
+    tree.inOrder(tree.getRoot(), print);
+    std::cout << std::endl;
+    tree.remove(13);
     tree.inOrder(tree.getRoot(), print);
     std::cout << std::endl;
     tree.insert(13);
