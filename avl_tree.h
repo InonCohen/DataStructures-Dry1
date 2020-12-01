@@ -17,6 +17,8 @@ class avlTree
 private:
     avlNode<T> *root;
 
+    avlNode<T> *largest;
+
     avlTreeResult_t insertAvlNode(avlNode<T> *root, avlNode<T> *new_node);
     avlTreeResult_t removeAvlNode(avlNode<T> *root, avlNode<T> *new_node);
 
@@ -38,10 +40,14 @@ public:
     void preOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const; // this, Left, Right
 
     void postOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const; // Left, Right, this
+
+    void reverseInOrder(int m, void (*function)(avlNode<T> *)) const;
     // void postOrder(avlNode<T> *root, void (*function)(avlNode<T> *, int* ));
     
     avlNode<T>* findNewRoot(avlNode<T> *newroot);
     void rootUpdate(avlNode<T>* newroot);
+    void updateLargest(avlNode<T> *root);
+    avlNode<T> * getLargest();
 
     void recursiveSetHeight(avlNode<T> *node);
     void removeLeaf(avlNode<T> *node);

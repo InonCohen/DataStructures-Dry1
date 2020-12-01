@@ -87,23 +87,19 @@ void avlNode<T>::copyFrom(avlNode<T> *node)
 {
     this->setRight(node->getRight());
     this->setLeft(node->getLeft());
-    // printNode(node);
     if (node->getParent())
     {
         if (node->isLeftChild())
         {
-            // std::cout << "11111a" << std::endl;
             node->getParent()->setLeft(this);
         }
         else
         {
-            // std::cout << "11111b" << std::endl;
             node->getParent()->setRight(this);
         }
     }
     else
     {
-        // std::cout << "222222111" << std::endl;
         this->setParent(NULL);
     }
 }
