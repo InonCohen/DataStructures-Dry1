@@ -24,6 +24,7 @@ public:
     classNode() = {};
     classNode(const int course_id, const int class_id, avlNode<courseNode>* parent, int time);
     ~classNode();
+    int getTime();
 };
 
 #endif
