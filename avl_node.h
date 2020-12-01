@@ -16,6 +16,7 @@ private:
 public:
     avlNode() = default;
     avlNode(const T &value);
+    avlNode(const avlNode<T>* node);
     ~avlNode() = default;
     avlNode *getLeft();
     avlNode *getRight();

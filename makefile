@@ -16,13 +16,7 @@ avl_node.o: avl_node.h avl_node.hpp
 avl_tree.o: avl_tree.h avl_tree.hpp
 	$(CXX) -c $(COMP_FLAG) $(DEBUG_FLAG) $*.cpp
 
-main.o: main.cpp avl_tree.hpp avl_tree.h avl_node.h avl_node.hpp 
-	$(CXX) -c $(COMP_FLAG) $(DEBUG_FLAG) $*.cpp
-
-calculator.o: graph.h calculator.cpp calculator.h
-	$(CXX) -c $(COMP_FLAG) $(DEBUG_FLAG) $*.cpp
-
-shell.o: shell.cpp shell.h calculator.h exceptions.h graph.h
+main.o: avl_tree.hpp avl_tree.h avl_node.h avl_node.hpp main.cpp
 	$(CXX) -c $(COMP_FLAG) $(DEBUG_FLAG) $*.cpp
 
 libgraph.a: $(OBJS)

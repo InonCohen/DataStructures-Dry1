@@ -9,6 +9,15 @@ avlNode<T>::avlNode(const T &value) : data(value), left(NULL), right(NULL), pare
 }
 
 template <class T>
+avlNode<T>::avlNode(const avlNode<T> *node)
+{
+    this->data = node->getValue();
+    this->left = node->getLeft();
+    this->right = node->getRight();
+    this->parent = node->getParent();
+}
+
+template <class T>
 avlNode<T> *avlNode<T>::getLeft()
 {
     return this->left;
@@ -63,7 +72,14 @@ void avlNode<T>::setParent(avlNode<T> *new_parent)
 template <class T>
 bool avlNode<T>::isLeftChild()
 {
-    return this->getParent()->getLeft() == this;
+    if (this->getParent()->getLeft())
+    {
+        if (this->getParent()->getLeft() == this)
+            return true;
+        if (this->getParent()->getLeft()->getValue() == this->getValue())
+            return true;
+    }
+    return false;
 }
 
 template <class T>
@@ -71,19 +87,23 @@ void avlNode<T>::copyFrom(avlNode<T> *node)
 {
     this->setRight(node->getRight());
     this->setLeft(node->getLeft());
+    // printNode(node);
     if (node->getParent())
     {
         if (node->isLeftChild())
         {
+            // std::cout << "11111a" << std::endl;
             node->getParent()->setLeft(this);
         }
         else
         {
+            // std::cout << "11111b" << std::endl;
             node->getParent()->setRight(this);
         }
     }
     else
     {
+        // std::cout << "222222111" << std::endl;
         this->setParent(NULL);
     }
 }
@@ -154,6 +174,7 @@ void avlNode<T>::print() const
 {
     std::cout << data << std::endl;
 }
+
 
 template <class T>
 int avlNode<T>::getHeight()

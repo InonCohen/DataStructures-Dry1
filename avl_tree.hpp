@@ -3,6 +3,8 @@
 
 #include "avl_tree.h"
 #include "avl_node.hpp"
+#include <stdlib.h>
+
 #include <iostream>
 
 template <class T>
@@ -27,6 +29,14 @@ void printHeight(avlNode<T> *root)
 {
     if (root)
         std::cout << root->getHeight() << " ";
+}
+
+template <class T>
+void printTreeStatus(avlTree<T> tree)
+{
+    std::cout << tree.getRoot()->getValue() << std::endl;
+    std::cout << tree.getRoot()->getRight()->getValue() << std::endl;
+    std::cout << tree.getRoot()->getLeft()->getValue() << std::endl;
 }
 
 template <class T>
@@ -78,7 +88,7 @@ avlTreeResult_t avlTree<T>::insert(const T &value)
 template <class T>
 avlTreeResult_t avlTree<T>::remove(const T &value)
 {
-    std::cout << "Trying to remove: " << value << std::endl;
+    // std::cout << "Trying to remove: " << value << std::endl;
     if (!root)
     { //Tree is empty
         // std::cout << "Tree is empty: " << std::endl;
@@ -95,16 +105,16 @@ avlTreeResult_t avlTree<T>::remove(const T &value)
 
     if (!node_to_remove->getParent())
     {
-        std::cout << "Removing The root" << std::endl;
+        // std::cout << "Removing The root" << std::endl;
         this->root = createNewSubTree(node_to_remove);
         avlNode<T> *newroot = findNewRoot(this->root);
-        std::cout << "root Removed" << std::endl;
-        if (newroot)
-            std::cout << "new root is: " << newroot->getValue() << std::endl;
-        else
-        {
-            std::cout << "now the tree is empty" << std::endl;
-        }
+        // std::cout << "root Removed" << std::endl;
+        // if (newroot)
+        //     std::cout << "new root is: " << newroot->getValue() << std::endl;
+        // else
+        // {
+        //     std::cout << "now the tree is empty" << std::endl;
+        // }
         rootUpdate(newroot);
     }
     else
@@ -118,23 +128,40 @@ avlTreeResult_t avlTree<T>::remove(const T &value)
 template <class T>
 void avlTree<T>::removeNodeWithParent(avlNode<T> *node_to_remove)
 {
-    std::cout << "removing node with parent: " << node_to_remove->getValue() << std::endl;
+    // std::cout << "removing node with parent: " << node_to_remove->getValue() << std::endl;
     avlNode<T> *parent = node_to_remove->getParent();
-    std::cout << "parent: " << node_to_remove->getParent()->getValue() << std::endl;
+    // std::cout << "parent: " << node_to_remove->getParent()->getValue() << std::endl;
     if (node_to_remove->isLeftChild())
     {
-        std::cout << "left child" << std::endl;
+        // std::cout << "left child" << std::endl;
         parent->setLeft(createNewSubTree(node_to_remove));
     }
     else
     {
-        std::cout << "right child" << std::endl;
+        // std::cout << "right child" << std::endl;
         parent->setRight(createNewSubTree(node_to_remove));
     }
-    std::cout << "removing node with parent: " << node_to_remove->getValue() << std::endl;
+    // std::cout << "removing node with parent: " << node_to_remove->getValue() << std::endl;
     recursiveSetHeight(parent);
     treeBalance(parent);
-    std::cout << "removing node with parent: " << node_to_remove->getValue() << std::endl;
+    // std::cout << "removing node with parent: " << node_to_remove->getValue() << std::endl;
+}
+
+template <class T>
+void printNode(avlNode<T> *node)
+{
+    std::cout << "=========================" << std::endl;
+    std::cout << "left child of: " << node->getValue() << " is: " << (node->getLeft() ? node->getLeft()->getValue() : 0) << std::endl;
+    std::cout << "Right child of: " << node->getValue() << " is: " << (node->getRight() ? node->getRight()->getValue() : 0) << std::endl;
+    std::cout << "parent of: " << node->getValue() << " is: " << (node->getParent() ? node->getParent()->getValue() : 0) << std::endl;
+    if (node->getParent())
+    {
+        if (node->isLeftChild())
+            std::cout << node->getValue() << " is left child" << std::endl;
+        else
+            std::cout << node->getValue() << " is right child" << std::endl;
+    }
+    std::cout << "=========================" << std::endl;
 }
 
 template <class T>
@@ -142,25 +169,21 @@ avlNode<T> *avlTree<T>::createNewSubTree(avlNode<T> *node)
 {
     if ((node->getRight()) && (node->getLeft()))
     {
-        std::cout << node->getValue() << "   has two children" << std::endl;
+        // std::cout << node->getValue() << "   has two children" << std::endl;
         avlNode<T> *next_node_in_order = firstInOrder(node->getRight());
 
-        std::cout << "trying to swap: " << node->getValue() << " with: " << next_node_in_order->getValue() << std::endl;
-        std::cout << "parent of: " << node->getValue() << " is: " << (node->getParent() ? node->getParent()->getValue() : 0) << std::endl;
-        std::cout << "parent of: " << next_node_in_order->getValue() << " is: " << (next_node_in_order->getParent() ? next_node_in_order->getParent()->getValue() : 0) << std::endl;
-        std::cout << "left child of: " << node->getValue() << "before swap is: " << (node->getLeft() ? node->getLeft()->getValue() : 0) << std::endl;
-        std::cout << "Right child of: " << node->getValue() << "before swap is: " << (node->getRight() ? node->getRight()->getValue() : 0) << std::endl;
-        std::cout << "left child of: " << next_node_in_order->getValue() << "before swap is: " << (next_node_in_order->getLeft() ? next_node_in_order->getLeft()->getValue() : 0) << std::endl;
-        std::cout << "Right child of: " << next_node_in_order->getValue() << "before swap is: " << (next_node_in_order->getRight() ? next_node_in_order->getRight()->getValue() : 0) << std::endl;
+        // std::cout << "trying to swap: " << node->getValue() << " with: " << next_node_in_order->getValue() << std::endl;
+        // printNode(node);
+        // printNode(next_node_in_order);
         swap(next_node_in_order, node);
-        std::cout << "Right child of: " << next_node_in_order->getValue() << "after swap is: " << (next_node_in_order->getRight() ? next_node_in_order->getRight()->getValue() : 0) << std::endl;
-        std::cout << "parent: " << node->getParent()->getValue() << std::endl;
+        // printNode(node);
+        // printNode(next_node_in_order);
 
         next_node_in_order->setParent(NULL);
-        std::cout << "set parent (null): " << next_node_in_order->getValue() << std::endl;
+        // std::cout << "set parent (null): " << next_node_in_order->getValue() << std::endl;
 
         removeNodeWithParent(node);
-        std::cout << "removed node with parent " << std::endl;
+        // std::cout << "removed node with parent " << std::endl;
         return next_node_in_order;
     }
     if ((!node->getRight()) && (!node->getLeft()))
@@ -198,38 +221,41 @@ avlNode<T> *avlTree<T>::firstInOrder(avlNode<T> *sub_root)
 template <class T>
 void avlTree<T>::swap(avlNode<T> *src, avlNode<T> *dst)
 {
-    avlNode<T> *temp = src;
-    if (temp->getRight() != src->getRight())
-        std::cout << "error1";
-    if (temp->getLeft() != src->getLeft())
-        std::cout << "error2";
-    if (temp->getParent() != src->getParent())
-        std::cout << "error3";
+    // std::cout << "trying to swap: src = " << src->getValue() << std::endl;
+    // std::cout << "asdasd " << src->getParent()->getLeft()->getValue() << std::endl;
+
     if (src->getRight() == dst) //if dst is right child of src perform parent-child right swap
     {
-        std::cout << "1" << std::endl;
+        // std::cout << "1" << std::endl;
         src->swapWithChild(dst, 1);
     }
     else if (src->getLeft() == dst) //if dst is left child of src perform parent-child left swap
     {
-        std::cout << "2" << std::endl;
+        // std::cout << "2" << std::endl;
         src->swapWithChild(dst, 0);
     }
     else if (dst->getRight() == src) //if src is right child of dst perform parent-child right swap
     {
-        std::cout << "3" << std::endl;
+        // std::cout << "3" << std::endl;
         dst->swapWithChild(src, 1);
     }
     else if (dst->getLeft() == src) //if src is left child of dst perform parent-child left swap
     {
-        std::cout << "4" << std::endl;
+        // std::cout << "4" << std::endl;
         dst->swapWithChild(src, 0);
     }
     else //not connected in the tree
     {
-        std::cout << "5" << std::endl;
-        src->copyFrom(dst);
-        dst->copyFrom(temp);
+        // std::cout << "5" << std::endl;
+        avlNode<T> temp_src = *src;
+        avlNode<T> temp_dst = *dst;
+        // std::cout << "temp_src: " << std::endl;
+        // printNode(&temp_src);
+        // std::cout << "temp_dst: " << std::endl;
+        // printNode(&temp_dst);
+        src->copyFrom(&temp_dst);
+        // std::cout << "second" << std::endl;
+        dst->copyFrom(&temp_src);
     }
 }
 
@@ -382,12 +408,15 @@ void avlTree<T>::rotateRight(avlNode<T> *sub_root)
     }
     else
     {
+        // std::cout << "sub_root's parent is: " << sub_root->getParent()->getValue() << std::endl;
         if (sub_root->isLeftChild())
         {
+            // std::cout << "sub_root is left child" << std::endl;
             sub_root->getParent()->setLeft(newroot);
         }
         else
         {
+            // std::cout << "sub_root is right child" << std::endl;
             sub_root->getParent()->setRight(newroot);
         }
     }

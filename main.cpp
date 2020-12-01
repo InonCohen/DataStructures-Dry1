@@ -2,19 +2,26 @@
 #include "avl_tree.hpp"
 
 int main(int, char **)
-{
+{  
     avlTree<int> tree;
     tree.inOrder(tree.getRoot(), print);
-    std::cout << std::endl;
     tree.insert(10);
-    tree.insert(1);
+    tree.insert(13);
+    tree.insert(14);
+    tree.insert(15);
+    tree.insert(16);
+    tree.insert(17);
+    tree.insert(18);
+    tree.insert(19);
 
+    printTreeStatus(tree);
     // tree.insert(1);
     // std::cout << "tree heights inOrder: ";
     // tree.inOrder(tree.getRoot(), printHeight);
     // std::cout << std::endl;
 
     tree.insert(15);
+    return 0;
 
     // std::cout << "tree heights inOrder: ";
     // tree.inOrder(tree.getRoot(), printHeight);
@@ -43,13 +50,11 @@ int main(int, char **)
     tree.inOrder(tree.getRoot(), printHeight);
     std::cout << std::endl;
 
-
     tree.inOrder(tree.getRoot(), printBF);
     std::cout << std::endl;
 
-    std::cout << tree.getRoot()->getValue() << std::endl;
-    std::cout << tree.getRoot()->getRight()->getValue() << std::endl;
-    std::cout << tree.getRoot()->getLeft()->getValue() << std::endl;
+    printTreeStatus(tree);
+
     tree.remove(15);
     tree.inOrder(tree.getRoot(), print);
     std::cout << std::endl;
@@ -120,9 +125,8 @@ int main(int, char **)
     // tree.preOrder(tree.getRoot(), printHeight);
     // std::cout << std::endl;
 
-    std::cout << tree.getRoot()->getValue() << std::endl;
-    std::cout << tree.getRoot()->getRight()->getValue() << std::endl;
-    std::cout << tree.getRoot()->getLeft()->getValue() << std::endl;
+    printTreeStatus(tree);
+
 
     return 0;
 }

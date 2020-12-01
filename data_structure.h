@@ -52,11 +52,6 @@ public:
     void removeNodeWithParent(avlNode<T> *node_to_remove);
 };
 
-template <class T>
-avlNode<T> *find(avlNode<T> *root, const T &value);
-
-template <class T>
-int getBF(avlNode<T> *root);
 
 
 
