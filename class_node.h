@@ -25,6 +25,7 @@ public:
     classNode(const int course_id, const int class_id, avlNode<courseNode>* parent, int time);
     ~classNode();
     int getTime();
+    StatusType_t setTime(const int time);
 };
 
 #endif

@@ -54,6 +54,36 @@ StatusType​ courseManager::TimeViewed(​void *​DS, ​int​ courseID, ​i
     *TimeViewed=wanted_class.getTime();
     return SUCCESS;
 
+}
 
+StatusType courseManager::WatchClass(void *DS, int courseID, int classID, int time){
+   if(DS==NULL || courseID<=0 || classID​<0​ || time<=0){
+       return INVALID_INPUT;
+   }
+   courseNode* wanted_course = find(DS->courses,courseID);
+    if(!wanted_course){
+        return FAILURE;
+    }
+    int num_of_classes = wanted_course->getTime();
+    if (classID+1>num_of_classes){
+        return INVALID_INPUT;
+    }
+    return (wanted_course->getClass(classID)->setTime(time));
+}
 
+StatusType courseManager::GetMostViewedClasses(void *DS, int numOfClasses, int *courses, int *classes){
+    if (DS==NULL || numOfClasses<=0){
+        return INVALID_INPUT;
+    }
+    if(classes.length()<numOfClasses){ // is it necessary/possible todo: in AVL Tree, create a counter for all leaves and a functions that provides this number
+   reutrn FAILURE;
+    }
+
+}
+
+void courseManager::Quit(void **DS){
+    free(*DS->classes);
+    free(*DS->courses);
+    *DS=nullptr;
+}
 #endif
