@@ -16,6 +16,7 @@ class courseNode
 {
 private:
     const int course_id;
+    const int num_of_classes;
     int *classes_id;
     avlNode<classNode>** classes_pointers_array;
 
@@ -23,6 +24,8 @@ public:
     courseNode() = default;
     courseNode(const int courseID, const int numOfClasses);
     ~courseNode();
+    classNode& getClass(const int classID);
+    StatusType_t setClass(const classNode& new_class,const int classID);
 };
 
 #endif
