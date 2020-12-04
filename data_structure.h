@@ -5,32 +5,31 @@
 #include "course_node.h"
 #include "class_node.h"
 
-
 typedef enum StatusType_t
 {
     ALLOCATION_ERROR,
     INVALID_INPUT,
     SUCCESS,
     FAILURE
-} StatusType_t;
+} StatusType;
 
 class courseManager
 {
 private:
-   avl_tree<course_node> courses;
-   avl_tree<class_node> classes; 
+    avlTree<courseNode> courses;
+    avlTree<classNode> classes;
 
 public:
-void*​ Init();
-StatusType​ AddCourse (​void *​DS, ​int​ courseID, ​int​ numOfClasses);
-StatusType​ RemoveCourse(​void *D​S, ​int​ courseID);
-StatusType​ WatchClass(​void *​DS, i​nt​ courseID, i​nt​ classID, ​int ​time);
-StatusType​ TimeViewed(​void *​DS, ​int​ courseID, ​int​ classID, ​int *​timeViewed);
-StatusType​ GetMostViewedClasses(​void *​DS, ​int ​numOfClasses, ​int *​courses, ​int *​classes);
-void ​Quit(​void **​DS);
+    courseManager();
+    void *Init();
+    StatusType AddCourse(int courseID, int numOfClasses);
+    StatusType RemoveCourse(int courseID);
+    StatusType WatchClass(int courseID, int classID, int time);
+    StatusType TimeViewed(int courseID, int classID, int *timeViewed);
+    StatusType GetMostViewedClasses(int numOfClasses, int *courses, int *classes);
+    avlTree<courseNode> getCourses() { return this->courses; }
+    avlTree<classNode> getClasses() { return this->classes; }
+    void Quit(void **DS);
 };
-
-
-
 
 #endif

@@ -2,8 +2,44 @@
 #include "avl_tree.hpp"
 
 int main(int, char **)
-{  
+{
     avlTree<int> tree;
+    for (int i = 3; i < 13; i++)
+    {
+        tree.insert(i);
+    }
+    // tree.inOrder(tree.getRoot(), printNode);
+
+    // printTreeStatus(&tree);
+    // std::cout << "largest: " << tree.getLargest()->getValue() << std::endl;
+    // std::cout << "first: " << tree.getFirst()->getValue() << std::endl;
+    // tree.reverseInOrder(14, print);
+    // for (int i = 3; i < 13; i++)
+    // {
+    //     tree.remove(i);
+    //     // printNode(tree.getLargest());
+    //     // std::cout << "removed: " << i << std::endl;
+    // }
+
+    tree.inOrder(tree.getRoot(), print);
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
+    tree.inOrder(tree.getRoot(), printBF);
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
+    tree.inOrder(tree.getRoot(), printHeight);
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
+    // std::cout << tree.getRoot() << std::endl;
+    // printTreeStatus(&tree);
+    // std::cout << "largest: " << tree.getLargest()->getValue() << std::endl;
+    // std::cout << "first: " << tree.getFirst()->getValue() << std::endl;
+    // tree.reverseInOrder(14, print);
+
+    return 0;
     tree.insert(10);
     tree.insert(13);
     tree.insert(14);
@@ -14,18 +50,18 @@ int main(int, char **)
     tree.insert(19);
     printTreeStatus(&tree);
 
-
     std::cout << tree.getLargest()->getValue() << std::endl;
 
     tree.reverseInOrder(5, print);
     std::cout << std::endl;
 
-    tree.reverseInOrder(20, print);
+    int z = tree.reverseInOrder(20, print);
     std::cout << std::endl;
-
-    tree.insert(15);
-
-    return 0;
+    std::cout << z << std::endl;
+    tree.insert(12);
+    z = tree.reverseInOrder(20, print);
+    std::cout << std::endl;
+    std::cout << z << std::endl;
 
     // std::cout << "tree heights inOrder: ";
     // tree.inOrder(tree.getRoot(), printHeight);
@@ -62,7 +98,6 @@ int main(int, char **)
     tree.remove(15);
     tree.inOrder(tree.getRoot(), print);
     std::cout << std::endl;
-    return 0;
     tree.remove(14);
     tree.inOrder(tree.getRoot(), print);
     std::cout << std::endl;
@@ -100,7 +135,6 @@ int main(int, char **)
     tree.remove(13);
     tree.inOrder(tree.getRoot(), print);
     std::cout << std::endl;
-    return 0;
     // std::cout << "DONE" << std::endl;
     // std::cout << tree.getRoot()->getValue() << std::endl;
     // std::cout << "HEY1" << std::endl;
@@ -130,7 +164,6 @@ int main(int, char **)
     // std::cout << std::endl;
 
     printTreeStatus(&tree);
-
 
     return 0;
 }

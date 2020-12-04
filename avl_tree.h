@@ -18,6 +18,7 @@ private:
     avlNode<T> *root;
 
     avlNode<T> *largest;
+    avlNode<T> *first;
 
     avlTreeResult_t insertAvlNode(avlNode<T> *root, avlNode<T> *new_node);
     avlTreeResult_t removeAvlNode(avlNode<T> *root, avlNode<T> *new_node);
@@ -31,30 +32,33 @@ public:
     void rotateLeft(avlNode<T> *root);
     void rotateRight(avlNode<T> *root);
     avlNode<T> *getRoot() const { return this->root; }
-    void inOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const; // Left, this, Right
-    void preOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const; // this, Left, Right
+    void inOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const;   // Left, this, Right
+    void preOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const;  // this, Left, Right
     void postOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const; // Left, Right, this
 
-    void reverseInOrder(int m, void (*function)(avlNode<T> *)) const;
+    int reverseInOrder(int m, void (*function)(avlNode<T> *)) const;
     // void postOrder(avlNode<T> *root, void (*function)(avlNode<T> *, int* ));
-    
-    avlNode<T>* findNewRoot(avlNode<T> *newroot);
-    void rootUpdate(avlNode<T>* newroot);
+
+    avlNode<T> *findNewRoot(avlNode<T> *newroot);
+    void rootUpdate(avlNode<T> *newroot);
     void updateLargest(avlNode<T> *root);
-    avlNode<T> * getLargest();
+    void updateFirst(avlNode<T> *root);
+    avlNode<T> *getLargest();
+    avlNode<T> *getFirst();
 
     void recursiveSetHeight(avlNode<T> *node);
     void removeLeaf(avlNode<T> *node);
     void removeNodeOneChild(avlNode<T> *node, bool is_right_child);
     void eraseAndBalance(avlNode<T> *node);
-    avlNode<T>* createNewSubTree(avlNode<T>* node);
+    avlNode<T> *createNewSubTree(avlNode<T> *node);
     void swap(avlNode<T> *src, avlNode<T> *dst);
-    avlNode<T>* firstInOrder(avlNode<T> *sub_root);
+    avlNode<T> *firstInOrder(avlNode<T> *sub_root);
     void removeNodeWithParent(avlNode<T> *node_to_remove);
 };
 
 template <class T>
 avlNode<T> *find(avlNode<T> *root, const T &value);
+
 
 template <class T>
 int getBF(avlNode<T> *root);
