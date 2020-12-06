@@ -461,7 +461,6 @@ avlNode<T> *find(avlNode<T> *root, const T &value)
         return find(root->getRight(), value); //search right sub tree
 }
 
-
 template <class T>
 int getBF(avlNode<T> *root)
 {
@@ -618,4 +617,106 @@ int avlTree<T>::reverseInOrder(int m, void (*function)(avlNode<T> *)) const
     return (m - i);
 }
 
+
+
+template <class T>
+int avlTree<T>::reverseInOrder(int m, void (*function)(avlNode<T> *, int *, int *, int), int *courses, int *classes) const
+{
+    if (this->root != NULL)
+        return -1;
+    int i = 0;
+    avlNode<T> *last_node = NULL;
+    avlNode<T> *node = largest;
+    while (i < m)
+    {
+        if (!node)
+            break;
+        if (node->getParent())
+        {
+            if (node->isLeftChild())
+            {
+                if (!last_node)
+                {
+                    function(node, courses, classes);
+                    i++;
+                    updateNextNode(&node);
+                    continue;
+                }
+                else if (last_node == node->getParent())
+                {
+                    last_node = node;
+                    if (node->getRight())
+                    {
+                        node = node->getRight();
+                        continue;
+                    }
+                    function(node, courses, classes);
+                    i++;
+                    if (node == this->first)
+                        return (m - i);
+                    updateNextNode(&node);
+                }
+                else if (last_node == node->getLeft())
+                {
+                    last_node = node;
+                    node = node->getParent();
+                    continue;
+                }
+                else if (last_node == node->getRight())
+                {
+                    function(node, courses, classes);
+                    i++;
+                    if (node == this->first)
+                        return (m - i);
+                    last_node = node;
+                    updateNextNode(&node);
+                }
+            }
+            else
+            {
+                if (!last_node)
+                {
+                    function(node, courses, classes);
+                    i++;
+                    last_node = node;
+                    updateNextNode(&node);
+                }
+                else if (last_node == node->getParent())
+                {
+                    last_node = node;
+                    if (node->getRight())
+                    {
+                        node = node->getRight();
+                        continue;
+                    }
+                    function(node, courses, classes);
+                    i++;
+                    updateNextNode(&node);
+                }
+                else if (last_node == node->getLeft())
+                {
+                    last_node = node;
+                    node = node->getParent();
+                }
+                else if (last_node == node->getRight())
+                {
+                    function(node, courses, classes);
+                    i++;
+                    last_node = node;
+                    updateNextNode(&node);
+                }
+            }
+        }
+        else
+        {
+            function(node, courses, classes);
+            i++;
+            if (node == this->first)
+                return (m - i);
+            last_node = node;
+            updateNextNode(&node);
+        }
+    }
+    return (m - i);
+}
 #endif

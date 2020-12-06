@@ -10,7 +10,7 @@ typedef enum StatusType_t
     INVALID_INPUT,
     SUCCESS,
     FAILURE
-} StatusType_t;
+} StatusType;
 
 class courseNode
 {
@@ -26,7 +26,6 @@ public:
     courseNode(const int courseID, const int numOfClasses);
     ~courseNode();
     avlNode<classNode>* getClass(const int classID);
-    StatusType_t setClass(const classNode& new_class,const int classID);
     bool operator<(const courseNode courseToCompare);
     bool operator>(const courseNode courseToCompare);
     bool operator<=(const courseNode courseToCompare);
@@ -40,8 +39,13 @@ public:
     const int getNumOfClasses() const {return this->num_of_classes;}
     int* getClasses() {return this->classes_id;}
     const int* getClasses() const {return this->classes_id;}
+    avlNode<classNode>* getClassPointer(int classID) { return *(this->classes_pointers_array+classID)}
+    avlNode<classNode>* const getClassPointer(int classID) const { return *(this->classes_pointers_array+classID)}
     avlNode<classNode>** getPointersArray() { return this->classes_pointers_array;}
     avlNode<classNode>** const getPointersArray() const { return this->classes_pointers_array;}
+
+    StatusType setClassPointer(int classID, avlNode<classNode>* class_ptr);
+
 };
 
 #endif

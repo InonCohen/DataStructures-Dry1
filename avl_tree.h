@@ -37,7 +37,7 @@ public:
     void postOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const; // Left, Right, this
 
     int reverseInOrder(int m, void (*function)(avlNode<T> *)) const;
-    // void postOrder(avlNode<T> *root, void (*function)(avlNode<T> *, int* ));
+    int reverseInOrder(int m, void (*function)(avlNode<T> *, int *, int *, int), int *courses, int *classes) const;
 
     avlNode<T> *findNewRoot(avlNode<T> *newroot);
     void rootUpdate(avlNode<T> *newroot);

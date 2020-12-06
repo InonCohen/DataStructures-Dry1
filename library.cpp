@@ -32,6 +32,7 @@ StatusType WatchClass(void *DS, int courseID, int classID, int time)
 StatusType TimeViewed(void *DS, int courseID, int classID, int *timeViewed)
 {
     DataStructureIsValid(DS);
+    return ((courseManager *)DS)->TimeViewed(courseID, classID, timeViewed);
 }
 
 StatusType GetMostViewedClasses(void *DS, int numOfClasses, int *courses, int *classes)

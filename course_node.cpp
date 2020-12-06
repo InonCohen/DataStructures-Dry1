@@ -51,13 +51,12 @@ avlNode<classNode>* courseNode::getClass(const int classID){
     return classes_pointers_array[classID];
 }
 
-StatusType_t courseNode::setClass(const classNode& new_class,const int classID){
-    if( new_class==nullptr || classID<0 || classID>num_of_classes){
-        return INVALID_INPUT;
-    }
-    classes_pointers_array[classID]=new_class;
+StatusType courseNode::setClassPointer(int classID, avlNode<classNode>* class_ptr)
+{
+    if (!class_ptr)
+        return FAILURE;
+    *(this->classes_pointers_array+classID) = class_ptr;
     return SUCCESS;
-
 }
 
 
@@ -80,3 +79,4 @@ bool courseNode::operator>(const courseNode courseToCompare)
 {
     return !(*this <= courseToCompare);
 }
+

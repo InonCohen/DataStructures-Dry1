@@ -18,6 +18,7 @@ class courseManager
 private:
     avlTree<courseNode> courses;
     avlTree<classNode> classes;
+    static int classes_counter = 0;
 
 public:
     courseManager();
@@ -30,6 +31,7 @@ public:
     avlTree<courseNode> getCourses() { return this->courses; }
     avlTree<classNode> getClasses() { return this->classes; }
     void Quit(void **DS);
+    StatusType replaceClass(avlNode<classNode> *ptr, int courseID, int classID, int time, avlNode<courseNode> *course);
 };
 
 #endif
