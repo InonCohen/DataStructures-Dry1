@@ -18,7 +18,7 @@ private:
     avlNode<T> *root;
 
     avlNode<T> *largest;
-    avlNode<T> *first;
+    avlNode<T> *first;//is it equal to smallest?
 
     avlTreeResult_t insertAvlNode(avlNode<T> *root, avlNode<T> *new_node);
     avlTreeResult_t removeAvlNode(avlNode<T> *root, avlNode<T> *new_node);
@@ -33,6 +33,7 @@ public:
     void rotateRight(avlNode<T> *root);
     avlNode<T> *getRoot() const { return this->root; }
     void inOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const;   // Left, this, Right
+    void nonRecursiveInOrder(int m, void (*function)(avlNode<T> *)) const;   // Left, this, Right
     void preOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const;  // this, Left, Right
     void postOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const; // Left, Right, this
 

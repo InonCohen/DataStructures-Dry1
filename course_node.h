@@ -17,7 +17,7 @@ class courseNode
 private:
     int course_id;
     int num_of_classes;
-    int *classes_id;
+    int *classes_id;// why is it needed? the indices are 0,1,...,numOfClasses-1
     avlNode<classNode>** classes_pointers_array;
 
 public:

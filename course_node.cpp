@@ -7,6 +7,7 @@ courseNode::courseNode(const int courseID, const int numOfClasses) : course_id(c
 
     avlNode<classNode>** new_classes_pointers_array = new avlNode<classNode>* [numOfClasses];
     this->classes_pointers_array = new_classes_pointers_array;
+    //shouldnt we initialize the arrays?
 }
 
 courseNode::courseNode(const courseNode& other): course_id(other.getId()), num_of_classes(other.getNumOfClasses()),

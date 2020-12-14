@@ -517,6 +517,107 @@ void updateNextNode(avlNode<T> **node)
 }
 
 template <class T>
+void avlTree::nonRecursiveInOrder(int m, void (*function)(avlNode<T> *)) const{
+    if (this->root != NULL)// why != and not ==
+        return -1;
+    int i = 0;
+    avlNode<T> *last_node = NULL;
+    avlNode<T> *node = first;
+    while (i < m)
+    {
+        if (!node)
+            break;
+        if (node->getParent())
+        {
+            if (node->isRightChild())
+            {
+                if (!last_node)
+                {
+                    function(node);
+                    i++;
+                    updateNextNode(&node);
+                    continue;
+                }
+                else if (last_node == node->getParent())
+                {
+                    last_node = node;
+                    if (node->getLeft())
+                    {
+                        node = node->getLeft();
+                        continue;
+                    }
+                    function(node);
+                    i++;
+                    if (node == this->first)
+                        return (m - i);
+                    updateNextNode(&node);
+                }
+                else if (last_node == node->getRight())
+                {
+                    last_node = node;
+                    node = node->getParent();
+                    continue;
+                }
+                else if (last_node == node->getLeft())
+                {
+                    function(node);
+                    i++;
+                    if (node == this->first)
+                        return (m - i);
+                    last_node = node;
+                    updateNextNode(&node);
+                }
+            }
+            else
+            {
+                if (!last_node)
+                {
+                    function(node);
+                    i++;
+                    last_node = node;
+                    updateNextNode(&node);
+                }
+                else if (last_node == node->getParent())
+                {
+                    last_node = node;
+                    if (node->getLeft())
+                    {
+                        node = node->getLeft();
+                        continue;
+                    }
+                    function(node);
+                    i++;
+                    updateNextNode(&node);
+                }
+                else if (last_node == node->getRight())
+                {
+                    last_node = node;
+                    node = node->getParent();
+                }
+                else if (last_node == node->getLeft())
+                {
+                    function(node);
+                    i++;
+                    last_node = node;
+                    updateNextNode(&node);
+                }
+            }
+        }
+        else
+        {
+            function(node);//I need clarifiction
+            i++;
+            if (node == this->largest)
+                return (m - i);
+            last_node = node;
+            updateNextNode(&node);
+        }
+    }
+    return (m - i);
+}
+
+
+template <class T>
 int avlTree<T>::reverseInOrder(int m, void (*function)(avlNode<T> *)) const
 {
     if (this->root != NULL)
