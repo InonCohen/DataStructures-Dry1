@@ -38,4 +38,12 @@ StatusType TimeViewed(void *DS, int courseID, int classID, int *timeViewed)
 StatusType GetMostViewedClasses(void *DS, int numOfClasses, int *courses, int *classes)
 {
     DataStructureIsValid(DS);
+    return ((courseManager *)DS)->GetMostViewedClasses(numOfClasses, courses, classes);
+}
+
+void Quit(void** DS)
+{
+    if (!*DS)
+        return;
+    delete ((courseManager *)*DS);
 }

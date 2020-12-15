@@ -5,10 +5,10 @@
 
 typedef enum avlTreeResult_t
 {
-    AVL_TREE_OUT_OF_MEMORY,
-    AVL_TREE_INVALID_INPUT,
-    AVL_TREE_SUCCESS,
-    AVL_TREE_FAILURE
+    AVL_TREE_OUT_OF_MEMORY = -2,
+    AVL_TREE_INVALID_INPUT = -3,
+    AVL_TREE_SUCCESS = 0,
+    AVL_TREE_FAILURE = -1
 } avlTreeResult_t;
 
 template <class T>
@@ -18,7 +18,7 @@ private:
     avlNode<T> *root;
 
     avlNode<T> *largest;
-    avlNode<T> *first;//is it equal to smallest?
+    avlNode<T> *first; //is it equal to smallest?
 
     avlTreeResult_t insertAvlNode(avlNode<T> *root, avlNode<T> *new_node);
     avlTreeResult_t removeAvlNode(avlNode<T> *root, avlNode<T> *new_node);
@@ -32,8 +32,9 @@ public:
     void rotateLeft(avlNode<T> *root);
     void rotateRight(avlNode<T> *root);
     avlNode<T> *getRoot() const { return this->root; }
-    void inOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const;   // Left, this, Right
-    void nonRecursiveInOrder(int m, void (*function)(avlNode<T> *)) const;   // Left, this, Right
+    void inOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const; // Left, this, Right
+    int nonRecursiveInOrder(int m, void (*function)(avlNode<T> *)) const; // Left, this, Right
+    int nonRecursiveInOrder(int m, void (*function)(avlNode<T> *, int *, int *, int *, int), int *courses, int *classes) const;
     void preOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const;  // this, Left, Right
     void postOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const; // Left, Right, this
 
@@ -59,7 +60,6 @@ public:
 
 template <class T>
 avlNode<T> *find(avlNode<T> *root, const T &value);
-
 
 template <class T>
 int getBF(avlNode<T> *root);

@@ -1,6 +1,6 @@
 CXX = /usr/local/bin/g++
 EXEC = DS
-OBJS = main.o #avl_node.o avl_tree.o
+OBJS = main.o library.o #avl_node.o avl_tree.o
 HFLS = main. havl_node.h avl_tree.h 
 CPPFLS = main.cpp
 HPPFLS = avl_node.hpp avl_tree.hpp
@@ -19,8 +19,10 @@ avl_tree.o: avl_tree.h avl_tree.hpp
 main.o: avl_tree.hpp avl_tree.h avl_node.h avl_node.hpp main.cpp
 	$(CXX) -c $(COMP_FLAG) $(DEBUG_FLAG) $*.cpp
 
-libgraph.a: $(OBJS)
-	ar -rs $@ $^
+library.o: library.h library.cpp
+	$(CXX) -c $(COMP_FLAG) $(DEBUG_FLAG) $*.cpp
+# libgraph.a: $(OBJS)
+# 	ar -rs $@ $^
 
 test:
 	make 

@@ -30,6 +30,7 @@ public:
     void print() const;
     int getHeight();
     bool isLeftChild();
+    bool isRightChild();
 
     void copyFrom(avlNode<T>* node);
     void swapWithChild(avlNode<T>* node, bool is_right);

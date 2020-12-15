@@ -2,27 +2,22 @@
 #define DATA_STRUCTURE_H
 
 #include "avl_tree.h"
-#include "course_node.h"
+#include "avl_node.h"
 #include "class_node.h"
+#include "course_node.h"
+#include "library.h"
 
-typedef enum StatusType_t
-{
-    ALLOCATION_ERROR,
-    INVALID_INPUT,
-    SUCCESS,
-    FAILURE
-} StatusType;
 
 class courseManager
 {
 private:
     avlTree<courseNode> courses;
     avlTree<classNode> classes;
-    static int classes_counter = 0;
+    static int classes_counter;
 
 public:
     courseManager();
-    void *Init();
+    ~courseManager();
     StatusType AddCourse(int courseID, int numOfClasses);
     StatusType RemoveCourse(int courseID);
     StatusType WatchClass(int courseID, int classID, int time);

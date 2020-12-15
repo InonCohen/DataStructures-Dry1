@@ -2,37 +2,46 @@
 #define DATA_STRUCTURE_HPP
 
 #include "data_structure.h"
-#include "avl_node.h"
 
-courseManager::courseManager() {}
-
-void *courseManager::Init() : courses(), classes()
+courseManager::courseManager(): classes_counter(0)
 {
-    return this;
+    AvlTree<courseNode> *new_courses = new AvlTree<courseNode>();
+    if (!new_courses)
+        return NULL;
+    AvlTree<courseNode> *new_classes = new AvlTree<classNode>();
+    if (!new_courses)
+    {
+        delete new_courses;
+        return NULL;
+    }
+    this->courses = new_courses;
+    this->classes = new_classes;
+}
+
+courseManager::~courseManager()
+{
+    delete courses;
+    delete classes;
 }
 
 StatusType courseManager::AddCourse(int courseID, int numOfClasses)
 {
     if (courseID <= 0 || numOfClasses <= 0)
         return INVALID_INPUT;
-    courseNode new_course;
-    new_course.setId(courseID);
-    new_course.setNumOfClasses(numOfClasses);
-    // if (!new_course)
-    //     return ALLOCATION_ERROR;
+    courseNode *new_course = new courseNode(courseID, numOfClasses);
+    if (!new_course)
+        return ALLOCATION_ERROR;
+    // new_course.setId(courseID);
+    // new_course.setNumOfClasses(numOfClasses);
 
-    // if (find(this->getCourses().getRoot(), *new_course))
-    // {
-    //     delete new_course;
-    //     return FAILURE;
-    // }
-
-    avlTreeResult_t insert_result = this->courses.insert(new_course);
+    avlTreeResult_t insert_result = this->courses.insert(*new_course);
     if (insert_result != AVL_TREE_SUCCESS)
+    {
+        delete new_course;
         return (StatusType)insert_result;
+    }
     else
     {
-        new_course.defaultValues();
         this->classes_counter += numOfClasses;
         return (StatusType)insert_result;
     }
@@ -46,10 +55,9 @@ StatusType courseManager::RemoveCourse(int courseID)
     courseNode searching_course_template;
     searching_course_template.setId(courseID);
     avlNode<courseNode> *course_pointer = find(this->getCourses().getRoot(), searching_course_template);
-    courseNode temp_course(course_pointer->getValue());
     if (!course_pointer)
         return FAILURE;
-
+    // courseNode temp_course(course_pointer->getValue());
     //Course Exists in tree
 
     //TODO - what happens when removing doesnt go well (should keep data structure like it was)
@@ -108,6 +116,8 @@ StatusType courseManager::WatchClass(int courseID, int classID, int time)
         return INVALID_INPUT;
 
     avlNode<classNode> *ptr = wanted_course->getValue().getClassPointer(classID);
+    if (!ptr)
+        wanted_course->getNodesPointer(classID)->removeNode();
     return this->replaceClass(ptr, courseID, classID, time, wanted_course);
 }
 
@@ -121,7 +131,7 @@ StatusType courseManager::replaceClass(avlNode<classNode> *ptr, int courseID, in
     }
     else
     {
-        classNode new_class(ptr->getValue().getCourseId(), ptr->getValue().getClassId(), ptr->getValue().getParentPointer(), ptr->getValue().getTime() + time);
+        classNode new_class(ptr->getValue().getCourseId(), ptr->getValue().getClassId(), (avlNode<courseNode> *)ptr->getValue().getParentPointer(), ptr->getValue().getTime() + time);
         avlTreeResult_t remove_old_class_result = this->classes.remove(ptr->getValue());
         if (remove_old_class_result != AVL_TREE_SUCCESS)
             return (StatusType)remove_old_class_result;
@@ -137,18 +147,10 @@ StatusType courseManager::replaceClass(avlNode<classNode> *ptr, int courseID, in
     }
 }
 
-
 void copyNodeToArrays(avlNode<classNode> *node, int *courses, int *classes, int index)
 {
-    courses[i] = node->getValue().getCourseId();
-    classes[i] = node->getValue().getClassId();
-}
-
-void copyEmptyClassesToArray(avlNode<courseNode> *node, int *courses, int *classes, int index)
-{
-    int numOfclasses
-    courses[i] = node->getValue().getCourseId();
-    classes[i] = node->getValue().getClassId();
+    courses[index] = node->getValue().getCourseId();
+    classes[index] = node->getValue().getClassId();
 }
 
 StatusType courseManager::GetMostViewedClasses(int numOfClasses, int *courses, int *classes)
@@ -159,23 +161,26 @@ StatusType courseManager::GetMostViewedClasses(int numOfClasses, int *courses, i
     if (this->classes_counter < numOfClasses)
         return FAILURE;
     else
-        int courses_with_zero_views = this->getClasses().getRoot().reverseInOrder(numOfClasses, copyNodeToArrays, courses, classes);
-    
-    if (courses_with_zero_views == 0)
+        int classes_with_zero_views = this->getClasses().getRoot().reverseInOrder(numOfClasses, copyNodeToArrays, courses, classes);
+
+    if (classes_with_zero_views == 0)
         return SUCCESS;
     else
-        int temp = this->getCourses().getRoot().inOrder(courses_with_zero_views, copyEmptyClassesToArray, courses, classes);
-    
+        this->getCourses().nonRecursiveInOrder(classes_with_zero_views, copyEmptyClassesToArray, courses + classes_with_zero_views, classes + classes_with_zero_views);
 }
- 
-//int reverseInOrder(int m, void (*function)(avlNode<T> *)) const;
 
-
-
-void courseManager::Quit(void **DS)
+void copyEmptyClassesToArray(avlNode<courseNode> *node, int *courses, int *classes, int *index_address, int classes_with_zero_views)
 {
-    free(*DS->classes);
-    free(*DS->courses);
-    *DS = nullptr;
+    listNode head = node->getList()->getHead();
+    if (!head)
+        return;
+    while (head && (classes_with_zero_views - *index_address))
+    {
+        courses[*index_address] = node->getId();
+        classes[*index_address] = node->getValue().getClassId();
+        *index_address++;
+        head = head->getNext();
+    }
 }
+
 #endif

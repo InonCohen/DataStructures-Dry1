@@ -4,6 +4,10 @@ classNode::classNode(const int course_id, const int class_id, avlNode<courseNode
     : course_id(course_id), class_id(class_id), parent(parent), time(time)
 {
 }
+classNode::classNode(const int course_id, const int class_id, void *parent, int time)
+    : course_id(course_id), class_id(class_id), parent(parent), time(time)
+{
+}
 
 classNode::classNode(const int course_id, const int class_id)
     : course_id(course_id), class_id(class_id)
