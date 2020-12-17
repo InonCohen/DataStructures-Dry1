@@ -3,7 +3,45 @@
 
 int main(int, char **)
 {
-    avlTree<int> tree;
+        twList<int> check;
+    std::cout<<check<<std::endl;
+    check.addFirst(9);
+    std::cout<<check<<std::endl;
+    check.addFirst(8);
+    std::cout<<check<<std::endl;
+    check.addLast(1);
+    std::cout<<check<<std::endl;
+    check.addLast(2);
+    std::cout<<check<<std::endl;
+    check.addLast(0);
+    std::cout<<check<<std::endl;
+    check.addFirst(0);
+    std::cout<<check<<std::endl;
+    check.addFirst(10);
+    std::cout<<check<<std::endl;
+    twListNode<int> *h,*t;
+    h=(check.getHead());
+    check.remove(h->getNext());
+    std::cout<<check<<std::endl;
+    t=(check.getTail());
+    check.remove(t->getPrev());
+    std::cout<<check<<std::endl;
+//    twListNode<int> five(5);
+//    check.addLast(five);
+//    std::cout<<check<<std::endl;
+//    twListNode<int> ten(10);
+//    check.addFirst(ten);
+//    std::cout<<check<<std::endl;
+//    twListNode<int> ele(11);
+//    check.addLast(ele);
+//    std::cout<<check<<std::endl;
+//    twListNode<int> zero(0);
+//    check.addFirst(zero);
+//    std::cout<<check<<std::endl;
+    return 0;
+}
+
+ /*   avlTree<int> tree;
     for (int i = 3; i < 13; i++)
     {
         tree.insert(i);
@@ -165,5 +203,5 @@ int main(int, char **)
 
     printTreeStatus(&tree);
 
-    return 0;
+    return 0;*/
 }
