@@ -84,6 +84,7 @@ static bool isInit = false;
 int main(int argc, const char**argv) {
 
     char buffer[MAX_STRING_INPUT_SIZE];
+    // printf("TEST");
 
     // Reading commands
     while (fgets(buffer, MAX_STRING_INPUT_SIZE, stdin) != NULL) {
@@ -253,18 +254,20 @@ static errorType OnTimeViewed(void* DS, const char* const command) {
 
 static errorType OnGetMostViewedClasses(void* DS, const char* const command) {
     int numOfClasses;
-    int *courses, *classes;
+    int *courses = NULL, *classes = NULL;
+	StatusType res = SUCCESS;
 
 	ValidateRead(sscanf(command, "%d", &numOfClasses), 1, "%s failed.\n", commandStr[GETMOSTVIEWEDCLASSES_CMD]);
-	courses = (int *)malloc(numOfClasses * sizeof(int));
-	classes = (int *)malloc(numOfClasses * sizeof(int));
-
-	StatusType res;
-	if (courses != NULL && classes != NULL) {
-		res = GetMostViewedClasses(DS, numOfClasses, courses, classes);
-	}
-	else {
+	if (numOfClasses > 0) {
+		courses = (int *)malloc(numOfClasses * sizeof(int));
+		classes = (int *)malloc(numOfClasses * sizeof(int));
+		if (courses == NULL || classes == NULL) {
 		res = ALLOCATION_ERROR;
+		}
+	}
+
+	if (res != ALLOCATION_ERROR) {
+		res = GetMostViewedClasses(DS, numOfClasses, courses, classes);
 	}
 
     if (res != SUCCESS) {
