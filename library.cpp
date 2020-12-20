@@ -46,5 +46,5 @@ void Quit(void** DS)
     if (!(DS))
         return;
     delete ((courseManager *)*DS);
-    *DS = NULL;
+    *DS = nullptr;
 }

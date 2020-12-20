@@ -62,6 +62,9 @@ template <class T>
 avlNode<T> *find(avlNode<T> *root, T* const value);
 
 template <class T>
+avlNode<T> *find(avlNode<T> *root, const T& value);
+
+template <class T>
 int getBF(avlNode<T> *root);
 
 #endif

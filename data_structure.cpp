@@ -24,6 +24,8 @@ courseManager::~courseManager()
 
 StatusType courseManager::AddCourse(int courseID, int numOfClasses)
 {
+    // if (courseID == 0)
+    // std::cout << "course NO. 0" << std::endl;
     if (courseID <= 0 || numOfClasses <= 0)
         return INVALID_INPUT;
     // std::cout << "adding course: " << courseID << " With: " << numOfClasses << " classes." << std::endl;
@@ -37,18 +39,38 @@ StatusType courseManager::AddCourse(int courseID, int numOfClasses)
     if (insert_result != AVL_TREE_SUCCESS)
         return (StatusType)insert_result;
 
+    // std::cout << "YAY! " << courseID << std::endl;
+    // std::cout << "YAY! " << new_course << std::endl;
     this->classes_counter += numOfClasses;
     return (StatusType)insert_result;
 }
 
+void printCourseNode(avlNode<courseNode> *node)
+{
+    std::cout << "=========================" << std::endl;
+    std::cout << "left child of: " << node->getValue()->getId() << " is: " << (node->getLeft() ? node->getLeft()->getValue()->getId() : -1) << std::endl;
+    std::cout << "Right child of: " << node->getValue()->getId() << " is: " << (node->getRight() ? node->getRight()->getValue()->getId() : -1) << std::endl;
+    std::cout << "parent of: " << node->getValue()->getId() << " is: " << (node->getParent() ? node->getParent()->getValue()->getId() : -1) << std::endl;
+    if (node->getParent())
+    {
+        if (node->isLeftChild())
+            std::cout << node->getValue()->getId() << " is left child" << std::endl;
+        else
+            std::cout << node->getValue()->getId() << " is right child" << std::endl;
+    }
+    std::cout << "=========================" << std::endl;
+}
+
 StatusType courseManager::RemoveCourse(int courseID)
 {
+    // std::cout << "trying to remove: " << courseID << std::endl;
+
     if (courseID <= 0)
         return INVALID_INPUT;
 
     courseNode searching_course_template;
     searching_course_template.setId(courseID);
-    avlNode<courseNode> *course_pointer = find(this->getCourses()->getRoot(), &searching_course_template);
+    avlNode<courseNode> *course_pointer = find(this->getCourses()->getRoot(), searching_course_template);
     if (!course_pointer)
         return FAILURE;
     // courseNode temp_course(course_pointer->getValue());
@@ -58,15 +80,22 @@ StatusType courseManager::RemoveCourse(int courseID)
 
     //Remove all classes in this course
     int number_of_classes = course_pointer->getValue()->getNumOfClasses();
+    // std::cout << "classes in this course: " << number_of_classes << std::endl;
     for (int i = 0; i < number_of_classes; i++)
     {
         avlNode<classNode> *class_to_remove = *(course_pointer->getValue()->getPointersArray() + i);
         if (class_to_remove)
             this->getClasses()->remove(class_to_remove->getValue());
     }
+//    this->getCourses()->inOrder(this->getCourses()->getRoot(), printCourseNode);
+
     avlTreeResult_t remove_result = this->getCourses()->remove((course_pointer->getValue()));
     if (remove_result == AVL_TREE_SUCCESS)
+    {
+        // std::cout << "success!!!!!!!!!!!!!!!!!!!" << std::endl;
+        // this->getCourses()->inOrder(this->getCourses()->getRoot(), printCourseNode);
         this->classes_counter -= number_of_classes;
+    }
     return (StatusType)remove_result;
 }
 
@@ -101,13 +130,12 @@ StatusType courseManager::WatchClass(int courseID, int classID, int time)
 
     courseNode temp_course;
     temp_course.setId(courseID);
-    avlNode<courseNode> *wanted_course = find(this->getCourses()->getRoot(), &temp_course);
+    avlNode<courseNode> *wanted_course = find(this->getCourses()->getRoot(), temp_course);
     if (!wanted_course)
     {
-        // std::cout << "not found class to watch." << std::endl;
+        // std::cout << "No Such Course." << std::endl;
         return FAILURE;
     }
-
     int num_of_classes = wanted_course->getValue()->getNumOfClasses();
     if (classID + 1 > num_of_classes)
         return INVALID_INPUT;
@@ -151,6 +179,8 @@ StatusType courseManager::replaceClass(avlNode<classNode> *ptr, int courseID, in
 
 void copyNodeToArrays(avlNode<classNode> *node, int *courses, int *classes, int index)
 {
+    // std::cout << "!!!!Class ID: " << node->getValue()->getClassId() << std::endl;
+    // std::cout << "!!!!Course ID: " << node->getValue()->getCourseId() << std::endl;
     courses[index] = node->getValue()->getCourseId();
     classes[index] = node->getValue()->getClassId();
 }
@@ -159,12 +189,13 @@ void copyEmptyClassesToArray(avlNode<courseNode> *node, int *courses, int *class
 {
     twListNode<int> *head = node->getValue()->getList()->getHead();
     twListNode<int> *tail = node->getValue()->getList()->getTail();
-    std::cout << *index_address << std::endl;
+    // std::cout << "Course ID: " << node->getValue()->getId() << std::endl;
+    // std::cout << *index_address << std::endl;
     if (!head)
         return;
 
     // twListNode<int> *head_copy = head;
-    // while (head_copy->getNext() != tail) 
+    // while (head_copy->getNext() != tail)
     // {
     //     head_copy = head_copy->getNext();
     //     std::cout << head_copy->getValue() << std::endl;
@@ -172,9 +203,9 @@ void copyEmptyClassesToArray(avlNode<courseNode> *node, int *courses, int *class
     while (head->getNext() != tail && (classes_with_zero_views - *index_address))
     {
         head = head->getNext();
-        std::cout << node->getValue()->getId() << std::endl;
+        // std::cout << "Course ID: " << node->getValue()->getId() << std::endl;
         courses[*index_address] = node->getValue()->getId();
-        std::cout << head->getValue() << std::endl;
+        // std::cout << "Class id:  " << head->getValue() << std::endl;
         classes[*index_address] = head->getValue();
         (*index_address)++;
     }
@@ -183,6 +214,7 @@ void copyEmptyClassesToArray(avlNode<courseNode> *node, int *courses, int *class
 StatusType courseManager::GetMostViewedClasses(int numOfClasses, int *courses, int *classes)
 {
     // std::cout << this->classes_counter << std::endl;
+    // int * temp_courses = courses;
     if (numOfClasses <= 0)
     {
         return INVALID_INPUT;
@@ -191,11 +223,11 @@ StatusType courseManager::GetMostViewedClasses(int numOfClasses, int *courses, i
         return FAILURE;
 
     int classes_with_zero_views = this->getClasses()->reverseInOrder(numOfClasses, copyNodeToArrays, courses, classes);
-    // std::cout << classes_with_zero_views << std::endl;
+    // std::cout << "classes with 0 views should be add to array: " << classes_with_zero_views << std::endl;
 
     if (classes_with_zero_views == 0)
         return SUCCESS;
-    else
-        this->getCourses()->nonRecursiveInOrder(classes_with_zero_views, copyEmptyClassesToArray, courses + classes_with_zero_views - 1, classes + classes_with_zero_views - 1);
+
+    this->getCourses()->nonRecursiveInOrder(classes_with_zero_views, copyEmptyClassesToArray, courses + numOfClasses - classes_with_zero_views, classes + numOfClasses - classes_with_zero_views);
     return SUCCESS;
 }

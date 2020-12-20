@@ -6,73 +6,38 @@ GetMostViewedClasses: INVALID_INPUT
 GetMostViewedClasses: FAILURE
 AddCourse: SUCCESS
 WatchClass: SUCCESS
-WatchClass: FAILURE
-0
-234
-0
-234
-1
-234
-2
-234
-3
-234
-4
+WatchClass: SUCCESS
 GetMostViewedClasses: SUCCESS
 Course	|	Class
-234	|	7
 234	|	5
-0	|	0
-0	|	0
+234	|	7
 234	|	0
 234	|	1
 234	|	2
+234	|	3
+234	|	4
 --End of most viewed classes--
 AddCourse: SUCCESS
-WatchClass: FAILURE
-0
-234
-0
-234
-1
-234
-2
-234
-3
-234
-4
+WatchClass: SUCCESS
 GetMostViewedClasses: SUCCESS
 Course	|	Class
-234	|	7
+123	|	7
 234	|	5
-0	|	0
-0	|	0
-234	|	0
-234	|	1
-234	|	2
---End of most viewed classes--
-RemoveCourse: SUCCESS
-0
-123
-0
-123
-1
-123
-2
-123
-3
-123
-4
-123
-5
-GetMostViewedClasses: SUCCESS
-Course	|	Class
 234	|	7
-0	|	0
-0	|	0
-0	|	0
-0	|	0
 123	|	0
 123	|	1
+123	|	2
+123	|	3
+--End of most viewed classes--
+RemoveCourse: SUCCESS
+GetMostViewedClasses: SUCCESS
+Course	|	Class
+123	|	7
+123	|	0
+123	|	1
+123	|	2
+123	|	3
+123	|	4
+123	|	5
 --End of most viewed classes--
 quit done.

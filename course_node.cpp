@@ -71,6 +71,7 @@ courseNode::courseNode():
 
 courseNode::~courseNode()
 {
+    // std::cout << "deleted course: " << this->course_id << std::endl;
     delete[] this->classes_pointers_array;
     delete[] this->zero_views_node_pointers;
     delete this->zero_views_classes;
@@ -104,7 +105,7 @@ CourseStatus courseNode::setClassPointer(int classID, avlNode<classNode> *class_
 
 bool courseNode::operator<(const courseNode& courseToCompare) const
 {
-    return this->course_id < courseToCompare.course_id;
+    return this->course_id < courseToCompare.getId();
 }
 
 bool courseNode::operator!() const
@@ -116,14 +117,14 @@ bool courseNode::operator!() const
 
 bool courseNode::operator==(const courseNode& courseToCompare) const
 {
-    return this->course_id == courseToCompare.course_id;
+    return this->course_id == courseToCompare.getId();
 }
 
 bool courseNode::operator<=(const courseNode& courseToCompare) const
 {
-    return this->course_id <= courseToCompare.course_id;
+    return this->course_id <= courseToCompare.getId();
 }
 bool courseNode::operator>(const courseNode& courseToCompare) const
 {
-    return !(*this <= courseToCompare);
+    return (this->course_id > courseToCompare.getId());
 }

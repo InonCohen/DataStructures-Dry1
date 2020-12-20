@@ -7,59 +7,19 @@ GetMostViewedClasses: FAILURE
 AddCourse: SUCCESS
 WatchClass: SUCCESS
 WatchClass: SUCCESS
-0
-234
-0
-234
-1
-234
-2
-234
-3
-234
-4
+Course ID: 234
 GetMostViewedClasses: SUCCESS
 Course	|	Class
 234	|	5
 234	|	7
-0	|	0
-0	|	0
 234	|	0
 234	|	1
 234	|	2
+234	|	3
+234	|	4
 --End of most viewed classes--
-AddCourse: SUCCESS
-WatchClass: FAILURE
-0
-234
-0
-234
-1
-234
-2
-234
-3
-234
-4
-GetMostViewedClasses: SUCCESS
-Course	|	Class
-234	|	5
-234	|	7
-0	|	0
-0	|	0
-234	|	0
-234	|	1
-234	|	2
---End of most viewed classes--
-RemoveCourse: SUCCESS
-GetMostViewedClasses: SUCCESS
-Course	|	Class
-20881664	|	20882448
-0	|	0
-0	|	20881728
-0	|	0
-20882512	|	20881824
-0	|	0
-0	|	20881616
---End of most viewed classes--
+quit done.
+AddCourse: INVALID_INPUT
+WatchClass: INVALID_INPUT
+GetMostViewedClasses: INVALID_INPUT
 quit done.

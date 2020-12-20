@@ -36,8 +36,6 @@ library.o: library.cpp library.h data_structure.h avl_tree.h avl_tree.hpp avl_no
 test:
 	make 
 	clear
-	./DS < in1.txt > out1.txt
-#	diff out1.txt predictedout1.txt
 
 
 tar:  $(HFLS) $(CPPFLS) test_in.txt test_out.txt Makefile design.pdf libgraph.a graph.i
@@ -72,59 +70,32 @@ swig: graph.i
 	swig -python -o graph_wrap.c  graph.i
 	g++ -std=c++11 -DNDEBUG --pedantic-errors -Wall -Werror -I/usr/local/include/python3.6m -fPIC -o _graph.so -shared graph_wrap.c libgraph.a 
 
-test1:
-	./gcalc < Tests/2.2\&2.5/interactive/t1in.txt > Tests/2.2\&2.5/interactive/predicted.out
-	diff   Tests/2.2\&2.5/interactive/t1out.txt Tests/2.2\&2.5/interactive/predicted.out
-	./gcalc < Tests/2.2\&2.5/interactive/t2in.txt > Tests/2.2\&2.5/interactive/predicted2.out
-	diff   Tests/2.2\&2.5/interactive/t2out.txt Tests/2.2\&2.5/interactive/predicted2.out
-	./gcalc < Tests/2.2\&2.5/interactive/t3in.txt > Tests/2.2\&2.5/interactive/predicted.out
-	diff   Tests/2.2\&2.5/interactive/t3out.txt Tests/2.2\&2.5/interactive/predicted.out
+valv2:
+	make test
+	valgrind --leak-check=full --track-origins=yes ./DS < all_tests/in2.txt > all_tests/myout2.txt
 
-	./gcalc Tests/2.2\&2.5/batch/t1in.txt Tests/2.2\&2.5/batch/predicted.out
-	diff Tests/2.2\&2.5/batch/predicted.out Tests/2.2\&2.5/batch/t1out.txt
-	./gcalc Tests/2.2\&2.5/batch/t2in.txt Tests/2.2\&2.5/batch/predicted.out
-	diff Tests/2.2\&2.5/batch/predicted.out Tests/2.2\&2.5/batch/t2out.txt
-	./gcalc Tests/2.2\&2.5/batch/t3in.txt Tests/2.2\&2.5/batch/predicted.out
-	diff Tests/2.2\&2.5/batch/predicted.out Tests/2.2\&2.5/batch/t3out.txt
-
-	./gcalc Tests/2.3/1.in Tests/2.3/predicted.out
-	diff Tests/2.3/predicted.out Tests/2.3/1.out
-	./gcalc Tests/2.3/2.in Tests/2.3/predicted.out
-	diff Tests/2.3/predicted.out Tests/2.3/2.out
-	./gcalc Tests/2.3/3.in Tests/2.3/predicted.out
-	diff Tests/2.3/predicted.out Tests/2.3/3.out
-	./gcalc Tests/2.3/4.in Tests/2.3/predicted.out
-	diff Tests/2.3/predicted.out Tests/2.3/4.out
-	./gcalc Tests/2.3/5.in Tests/2.3/predicted.out
-	diff Tests/2.3/predicted.out Tests/2.3/5.out
-	./gcalc Tests/2.3/6.in Tests/2.3/predicted.out
-	diff Tests/2.3/predicted.out Tests/2.3/6.out
-
-	./gcalc Tests/4.1/1.in Tests/4.1/predicted.out
-	diff Tests/4.1/predicted.out Tests/4.1/1.out
-
-	./gcalc Tests/4.1/2.in Tests/4.1/predicted.out
-	diff Tests/4.1/predicted.out Tests/4.1/2.out
-
-	./gcalc Tests/4.1/3.in Tests/4.1/predicted.out
-	diff Tests/4.1/predicted.out Tests/4.1/3.out
-
-	./gcalc Tests/4.1/4.in Tests/4.1/predicted.out
-	diff Tests/4.1/predicted.out Tests/4.1/4.out
-
-	/usr/local/bin/python3.6 test1.py > Tests/4.4/predicted.out
-	diff Tests/4.4/test1.out Tests/4.4/predicted.out
-
-	/usr/local/bin/python3.6 test2.py > Tests/4.4/predicted.out
-	diff Tests/4.4/test2.out Tests/4.4/predicted.out
-
-	/usr/local/bin/python3.6 test3.py > Tests/4.4/predicted.out
-	diff Tests/4.4/test3.out Tests/4.4/predicted.out
 
 test2:
-	/usr/local/bin/python3.6 test3.py > Tests/4.4/predicted.out
-	diff Tests/4.4/test3.out Tests/4.4/predicted.out
+	make test
+	./DS < all_tests/in2.txt > all_tests/myout2.txt
+	diff all_tests/myout2.txt all_tests/out2.txt
 
 test3:
-	./gcalc < Tests/2.2\&2.5/interactive/t3in.txt > Tests/2.2\&2.5/interactive/predicted.out
-	diff   Tests/2.2\&2.5/interactive/t3out.txt Tests/2.2\&2.5/interactive/predicted.out
+	make test
+	./DS < all_tests/in3.txt > all_tests/myout3.txt
+	diff all_tests/myout3.txt all_tests/out3.txt
+
+test4:
+	make test
+	./DS < all_tests/in4.txt > all_tests/myout4.txt
+	diff all_tests/myout4.txt all_tests/out4.txt
+
+test5:
+	make test
+	./DS < all_tests/in5.txt > all_tests/myout5.txt
+	diff all_tests/myout5.txt all_tests/out5.txt
+
+valv4:
+	make test
+	valgrind --leak-check=full --track-origins=yes ./DS < all_tests/in4.txt > all_tests/myout4.txt
+
