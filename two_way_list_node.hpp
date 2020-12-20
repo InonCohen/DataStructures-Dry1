@@ -7,7 +7,6 @@
 
 template <class T>
 class twListNode {
-    //int key; //roomID??
     T value;
     twListNode<T>* prev;
     twListNode<T>* next;
@@ -30,16 +29,16 @@ public:
     void setNext(twListNode* node){
         this->next = node;
     }
-    const T& getVal() const{
+    const T& getValue() const{
         return this->value;
     }
-    void setVal(T& val){
+    void setValue(T& val){
         this->value = val;
     }
 
     twListNode<T> clone(){
         twListNode<T> to_return;
-        to_return.setVal(this->value);
+        to_return.setValue(this->value);
         to_return.setPrev(nullptr);
         to_return.setNext(nullptr);
         return to_return;
@@ -58,7 +57,7 @@ public:
 
 template<class T>
 std::ostream& operator<<(std::ostream& os, const twListNode<T>& to_print){
-    os<<to_print.getVal();
+    os<<to_print.getValue();
     return os;
 }
 

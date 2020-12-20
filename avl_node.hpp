@@ -4,7 +4,7 @@
 #include "avl_node.h"
 
 template <class T>
-avlNode<T>::avlNode(const T &value) : data(value), left(NULL), right(NULL), parent(NULL)
+avlNode<T>::avlNode(T* const value) : data(value), left(NULL), right(NULL), parent(NULL)
 {
 }
 
@@ -36,13 +36,13 @@ avlNode<T> *avlNode<T>::getParent()
 }
 
 template <class T>
-T &avlNode<T>::getValue()
+T* avlNode<T>::getValue()
 {
     return this->data;
 }
 
 template <class T>
-const T avlNode<T>::getValue() const
+const T* avlNode<T>::getValue() const
 {
     return this->data;
 }

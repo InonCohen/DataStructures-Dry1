@@ -26,8 +26,8 @@ private:
 public:
     avlTree();
     ~avlTree();
-    avlTreeResult_t insert(const T &value);
-    avlTreeResult_t remove(const T &value);
+    avlTreeResult_t insert(T* const value);
+    avlTreeResult_t remove(T* const value);
     void treeBalance(avlNode<T> *root);
     void rotateLeft(avlNode<T> *root);
     void rotateRight(avlNode<T> *root);
@@ -59,7 +59,7 @@ public:
 };
 
 template <class T>
-avlNode<T> *find(avlNode<T> *root, const T &value);
+avlNode<T> *find(avlNode<T> *root, T* const value);
 
 template <class T>
 int getBF(avlNode<T> *root);

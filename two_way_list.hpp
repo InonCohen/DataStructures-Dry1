@@ -2,7 +2,7 @@
 #define TW_LIST_NO_ITER_HPP
 #include <assert.h>
 #include <string>
-#include "twList_node.h"
+#include "two_way_list_node.hpp"
 
 //#define BIGGER '>'
 //#define SMALLER '<'
@@ -14,10 +14,10 @@
 
 typedef enum twListResult_t
 {
-    TW_LIST_OUT_OF_MEMORY,
-    TW_LIST_INVALID_INPUT,
-    TW_LIST_SUCCESS,
-    TW_LIST_FAILURE
+    TW_LIST_OUT_OF_MEMORY = -2,
+    TW_LIST_INVALID_INPUT = -3,
+    TW_LIST_SUCCESS = 0,
+    TW_LIST_FAILURE = -1
 } twListResult_t;
 
 template <class T>
@@ -67,11 +67,15 @@ public:
           */
     const int size() const;
 
-    twListNode<T>* getHead(){
+    twListNode<T>* getHead() {
+        if (num_of_nodes == 0)
+            return NULL;
         return head;
     };
 
     twListNode<T>* getTail(){
+        if (num_of_nodes == 0)
+            return NULL;
         return tail;
     };
 

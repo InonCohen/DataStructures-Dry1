@@ -3,11 +3,14 @@
 
 #include <iostream>
 
+class classNode;
+class courseNode;
+
 template <class T>
 class avlNode
 {
 private:
-    T data;
+    T* data;
     avlNode *left;
     avlNode *right;
     avlNode *parent;
@@ -15,14 +18,14 @@ private:
 
 public:
     avlNode() = default;
-    avlNode(const T &value);
+    avlNode(T* const value);
     avlNode(const avlNode<T>* node);
     ~avlNode() = default;
     avlNode *getLeft();
     avlNode *getRight();
     avlNode *getParent();
-    T &getValue();
-    const T getValue() const;
+    T* getValue();
+    const T* getValue() const;
     void setLeft(avlNode<T> *new_left);
     void setRight(avlNode<T> *new_right);
     void setParent(avlNode<T> *new_parent);

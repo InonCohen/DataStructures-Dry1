@@ -43,7 +43,8 @@ StatusType GetMostViewedClasses(void *DS, int numOfClasses, int *courses, int *c
 
 void Quit(void** DS)
 {
-    if (!*DS)
+    if (!(DS))
         return;
     delete ((courseManager *)*DS);
+    *DS = NULL;
 }

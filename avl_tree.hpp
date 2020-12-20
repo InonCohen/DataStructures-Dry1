@@ -18,12 +18,15 @@ static void deleteNode(avlNode<T> *node)
 {
     if (!node)
         return;
+    if (node->getValue())
+        delete node->getValue();
     delete node;
 }
 
 template <class T>
 avlTree<T>::avlTree() : root(NULL), largest(NULL), first(NULL)
-{}
+{
+}
 
 template <class T>
 avlTree<T>::~avlTree()
@@ -33,11 +36,10 @@ avlTree<T>::~avlTree()
     postOrder(root, deleteNode);
 }
 
-
 template <class T>
 void print(avlNode<T> *root)
 {
-    std::cout << root->getValue() << " ";
+    std::cout << *(root->getValue()) << " ";
 }
 
 template <class T>
@@ -66,36 +68,33 @@ void printTreeStatus(avlTree<T> *tree)
     }
 }
 
-
 template <class T>
-avlTreeResult_t avlTree<T>::insert(const T &value)
+avlTreeResult_t avlTree<T>::insert(T* const value)
 {
-
     avlNode<T> *new_node = new avlNode<T>(value);
 
     if (!new_node)
-    {
-        // std::cout << " memoory error" << std::endl;
         return AVL_TREE_OUT_OF_MEMORY; // Out of memory
-    }
     // std::cout << "1" << std::endl;
 
     if (!root)
     { // Special case
         root = new_node;
         root->setHeight();
-        // std::cout << "ADDED NEW ROOT: " << new_node->getValue() << std::endl;
+        // std::cout << "ADDED NEW ROOT: " << (new_node) << std::endl;
         largest = new_node;
         first = new_node;
         return AVL_TREE_SUCCESS;
     }
-    else if (find(root, new_node->getValue()))
+    else if (find(root, (new_node->getValue())))
     {
+        // std::cout << "found course" << std::endl;
         deleteNode(new_node);
         return AVL_TREE_FAILURE;
     }
     else if (insertAvlNode(root, new_node) != AVL_TREE_SUCCESS)
     {
+        // std::cout << "insert failed" << std::endl;
         deleteNode(new_node);
         return AVL_TREE_FAILURE;
     }
@@ -107,7 +106,7 @@ avlTreeResult_t avlTree<T>::insert(const T &value)
 }
 
 template <class T>
-avlTreeResult_t avlTree<T>::remove(const T &value)
+avlTreeResult_t avlTree<T>::remove(T* const value)
 {
     // std::cout << "Trying to remove: " << value << std::endl;
     if (!root)
@@ -267,6 +266,7 @@ void avlTree<T>::updateLargest(avlNode<T> *root)
 {
     if (!root)
         return;
+    largest = root;
     while (largest->getRight())
     {
         largest = largest->getRight();
@@ -278,6 +278,7 @@ void avlTree<T>::updateFirst(avlNode<T> *root)
 {
     if (!root)
         return;
+    first = root;
     while (first->getLeft())
     {
         first = first->getLeft();
@@ -446,16 +447,19 @@ void avlTree<T>::rotateRight(avlNode<T> *sub_root)
 }
 
 template <class T>
-avlNode<T> *find(avlNode<T> *root, const T &value)
+avlNode<T> *find(avlNode<T> *root, T* const value)
 {
+    // std::cout << "trying to find at tree with root: " << root << std::endl;
     if (!root)
         return NULL;
     if (!value)
         return NULL;
 
-    if (root->getValue() == value)
+    if (*(root->getValue()) == *value)
+    {
         return root;
-    else if (value < root->getValue())
+    }
+    else if (*value < *(root->getValue()))
         return find(root->getLeft(), value); //search left sub tree
     else
         return find(root->getRight(), value); //search right sub tree
@@ -831,7 +835,7 @@ int avlTree<T>::reverseInOrder(int m, void (*function)(avlNode<T> *)) const
 template <class T>
 int avlTree<T>::reverseInOrder(int m, void (*function)(avlNode<T> *, int *, int *, int), int *courses, int *classes) const
 {
-    if (this->root != NULL)
+    if (this->root == NULL)
         return -1;
     int i = 0;
     avlNode<T> *last_node = NULL;

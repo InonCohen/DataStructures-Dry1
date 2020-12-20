@@ -1,37 +1,49 @@
 #include "course_node.h"
 
-courseNode::courseNode(const int courseID, const int numOfClasses) : course_id(courseID), num_of_classes(numOfClasses)
+courseNode::courseNode(const int courseID, const int numOfClasses) :
+        course_id(courseID), num_of_classes(numOfClasses),
+        classes_pointers_array(new avlNode<classNode> *[numOfClasses]),
+        zero_views_node_pointers(new twListNode<int> *[numOfClasses]),
+        zero_views_classes(new twList<int>())
 {
-    avlNode<classNode> **new_classes_pointers_array = new avlNode<classNode> *[numOfClasses];
-    if (!new_classes_pointers_array)
-        return NULL;
-    listNode **new_zero_views_node_pointers = new listNode *[numOfClasses];
-    if (!new_zero_views_node_pointers)
-    {
-        delete[] new_classes_pointers_array;
-        return NULL;
-    }
-    linkedListRooms *new_zero_views_classes = new linkedListRooms();
-    if (!new_zero_views_classes)
-    {
-        delete[] new_classes_pointers_array;
-        delete[] new_zero_views_node_pointers;
-        return NULL;
-    }
-    this->classes_pointers_array = new_classes_pointers_array;
-    this->zero_views_classes = new_zero_views_classes;
-    this->zero_views_node_pointers = new_zero_views_node_pointers;
+/* avlNode<classNode> **new_classes_pointers_array = new avlNode<classNode> *[numOfClasses];
+// if (!new_classes_pointers_array)
+//     return NULL;
+// twListNode<int>** new_zero_views_node_pointers = new twListNode<int> *[numOfClasses];
+// if (!new_zero_views_node_pointers)
+// {
+//     delete[] new_classes_pointers_array;
+//     return NULL;
+// }
+// twList<int>* new_zero_views_classes = new twList<int>();
+// if (!new_zero_views_classes)
+// {
+//     delete[] new_classes_pointers_array;
+//     delete[] new_zero_views_node_pointers;
+//     return NULL;
+// }
+// this->classes_pointers_array = new_classes_pointers_array;
+// this->zero_views_classes = new_zero_views_classes;
+// this->zero_views_node_pointers = new_zero_views_node_pointers; */
     for (int i = 0; i < this->num_of_classes; i++)
     {
         *(this->classes_pointers_array + i) = NULL;
-        this->zero_views_classes->addBack(i);
-        *(this->zero_views_node_pointers + i) = this->zero_views_classes->getTail();
+        this->zero_views_classes->addLast(i);
+        *(this->zero_views_node_pointers + i) = this->zero_views_classes->getTail()->getPrev();
     }
 }
 
-// courseNode::courseNode(const courseNode &other) : course_id(other.getId()), num_of_classes(other.getNumOfClasses()),
-//                                                   classes_pointers_array(new avlNode<classNode> *[other.getNumOfClasses()])
-// {
+courseNode::courseNode():
+        classes_pointers_array(new avlNode<classNode> *[1]),
+        zero_views_node_pointers(new twListNode<int> *[1]),
+        zero_views_classes(new twList<int>())
+{}
+
+
+// courseNode::courseNode(const courseNode &other) : course_id(other.courseID), num_of_classes(other.numOfClasses),
+//         classes_pointers_array(new avlNode<classNode> *[other.numOfClasses]),
+//         zero_views_node_pointers(new twListNode<int> *[other.numOfClasses]),
+//         zero_views_classes(new twList<int>()){
 //     for (int i = 0; i < this->num_of_classes; i++)
 //     {
 //         *(this->classes_pointers_array + i) = *(other.getPointersArray() + i);
@@ -61,7 +73,6 @@ courseNode::~courseNode()
 {
     delete[] this->classes_pointers_array;
     delete[] this->zero_views_node_pointers;
-    this->zero_views_classes->cleanList();
     delete this->zero_views_classes;
 }
 
@@ -83,29 +94,36 @@ avlNode<classNode> *courseNode::getClass(const int classID)
     return classes_pointers_array[classID];
 }
 
-StatusType courseNode::setClassPointer(int classID, avlNode<classNode> *class_ptr)
+CourseStatus courseNode::setClassPointer(int classID, avlNode<classNode> *class_ptr)
 {
     if (!class_ptr)
-        return FAILURE;
+        return COURSE_FAILURE;
     *(this->classes_pointers_array + classID) = class_ptr;
-    return SUCCESS;
+    return COURSE_SUCCESS;
 }
 
-bool courseNode::operator<(const courseNode courseToCompare)
+bool courseNode::operator<(const courseNode& courseToCompare) const
 {
     return this->course_id < courseToCompare.course_id;
 }
 
-bool courseNode::operator==(const courseNode courseToCompare)
+bool courseNode::operator!() const
+{
+    if (getId())
+        return false;
+    return true;
+}
+
+bool courseNode::operator==(const courseNode& courseToCompare) const
 {
     return this->course_id == courseToCompare.course_id;
 }
 
-bool courseNode::operator<=(const courseNode courseToCompare)
+bool courseNode::operator<=(const courseNode& courseToCompare) const
 {
     return this->course_id <= courseToCompare.course_id;
 }
-bool courseNode::operator>(const courseNode courseToCompare)
+bool courseNode::operator>(const courseNode& courseToCompare) const
 {
     return !(*this <= courseToCompare);
 }

@@ -1,9 +1,5 @@
 #include "class_node.h"
 
-classNode::classNode(const int course_id, const int class_id, avlNode<courseNode> *parent, int time)
-    : course_id(course_id), class_id(class_id), parent(parent), time(time)
-{
-}
 classNode::classNode(const int course_id, const int class_id, void *parent, int time)
     : course_id(course_id), class_id(class_id), parent(parent), time(time)
 {
@@ -23,9 +19,10 @@ classNode &classNode::operator=(const classNode &other)
 {
     this->parent = other.parent;
     this->time = other.time;
+    return *this;
 }
 
-bool classNode::operator==(const classNode &other)
+bool classNode::operator==(const classNode &other) const
 {
     if (this->time != other.time)
         return false;
@@ -42,7 +39,7 @@ bool classNode::operator==(const classNode &other)
     return true;
 }
 
-bool classNode::operator<(const classNode &other) 
+bool classNode::operator<(const classNode &other) const
 {
     if (this->time < other.time)
         return true;
@@ -54,21 +51,16 @@ bool classNode::operator<(const classNode &other)
             return true;
         if (this->course_id < other.course_id)
             return false;
-        else
-        {
-            if (this->class_id > other.class_id)
+        if (this->class_id >= other.class_id)
                 return true;
-            if (this->class_id < other.class_id)
-                return false;
-        }
+            // if (this->class_id < other.class_id)
+        return false;
     }
 }
 
-
-    // StatusType_t classNode::setTime(const int time_to_add){
-    //     if(time_to_add<=0){
-    //         return INVALID_INPUT;
-    //     }
-    //     time+=time_to_add;
-    //     return SUCCESS;
-    // }
+bool classNode::operator!() const
+{
+    if (getCourseId())
+        return false;
+    return true;
+}
