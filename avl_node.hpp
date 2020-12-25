@@ -125,6 +125,7 @@ void avlNode<T>::swapWithChild(avlNode<T> *node, bool is_right)
     // node is either right or left child of this
     avlNode<T> *temp_right = node->getRight();
     avlNode<T> *temp_left = node->getLeft();
+    avlNode<T> *temp_this_left = this->getLeft();
     if (is_right)
     {
         // std::cout << "Is RIGHT!" << std::endl;
@@ -141,9 +142,8 @@ void avlNode<T>::swapWithChild(avlNode<T> *node, bool is_right)
             }
         }
         else
-        {
             node->setParent(NULL);
-        }
+
         node->setRight(this);
         this->setRight(temp_right);
         this->setLeft(temp_left);
@@ -164,13 +164,14 @@ void avlNode<T>::swapWithChild(avlNode<T> *node, bool is_right)
             }
         }
         else
-        {
             node->setParent(NULL);
-        }
+
         node->setLeft(this);
         this->setRight(temp_right);
         this->setLeft(temp_left);
     }
+    if (temp_this_left != node->getLeft())
+        exit(2);
 }
 
 template <class T>

@@ -1,15 +1,10 @@
 Init
-TimeViewed -1 1
-TimeViewed 0 1
-TimeViewed 1 1
-GetMostViewedClasses 0
-GetMostViewedClasses 1
 AddCourse 234 10
-WatchClass 234 5 12
-WatchClass 234 7 12
-GetMostViewedClasses 7
-Quit
-AddCourse 123 10
-WatchClass 123 7 12
+AddCourse 23 10
+AddCourse 22 10
+AddCourse 235 10
+AddCourse 2333 10
+AddCourse 23333 10
+RemoveCourse 234
 GetMostViewedClasses 7
 Quit

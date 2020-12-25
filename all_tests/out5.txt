@@ -50,11 +50,11 @@ Course	|	Class
 12	|	6
 12	|	7
 --End of most viewed classes--
-GetMostViewedClasses: ALLOCATION_ERROR
+GetMostViewedClasses: INVALID_INPUT
 WatchClass: SUCCESS
 WatchClass: FAILURE
 WatchClass: FAILURE
-GetMostViewedClasses: ALLOCATION_ERROR
+GetMostViewedClasses: INVALID_INPUT
 WatchClass: INVALID_INPUT
 WatchClass: INVALID_INPUT
 WatchClass: INVALID_INPUT

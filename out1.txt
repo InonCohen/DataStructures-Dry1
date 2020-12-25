@@ -1,25 +1,19 @@
 init done.
-TimeViewed: INVALID_INPUT
-TimeViewed: INVALID_INPUT
-TimeViewed: FAILURE
-GetMostViewedClasses: INVALID_INPUT
-GetMostViewedClasses: FAILURE
 AddCourse: SUCCESS
-WatchClass: SUCCESS
-WatchClass: SUCCESS
-Course ID: 234
+AddCourse: SUCCESS
+AddCourse: SUCCESS
+AddCourse: SUCCESS
+AddCourse: SUCCESS
+AddCourse: SUCCESS
+RemoveCourse: SUCCESS
 GetMostViewedClasses: SUCCESS
 Course	|	Class
-234	|	5
-234	|	7
-234	|	0
-234	|	1
-234	|	2
-234	|	3
-234	|	4
+22	|	0
+22	|	1
+22	|	2
+22	|	3
+22	|	4
+22	|	5
+22	|	6
 --End of most viewed classes--
-quit done.
-AddCourse: INVALID_INPUT
-WatchClass: INVALID_INPUT
-GetMostViewedClasses: INVALID_INPUT
 quit done.

@@ -1,6 +1,6 @@
 #include "data_structure.h"
 
-courseManager::courseManager() : courses(new avlTree<courseNode>()), classes(new avlTree<classNode>()){}
+courseManager::courseManager() : courses(new avlTree<courseNode>()), classes(new avlTree<classNode>()) {}
 
 courseManager::~courseManager()
 {
@@ -10,19 +10,21 @@ courseManager::~courseManager()
 
 StatusType courseManager::AddCourse(int courseID, int numOfClasses)
 {
-    if (courseID <= 0 || numOfClasses <= 0){
+    if (courseID <= 0 || numOfClasses <= 0)
+    {
         return INVALID_INPUT;
     }
     courseNode *new_course = new courseNode(courseID, numOfClasses);
     avlTreeResult_t insert_result = this->getCourses()->insert(new_course);
-    if (insert_result != AVL_TREE_SUCCESS){
+    if (insert_result != AVL_TREE_SUCCESS)
+    {
         return (StatusType)insert_result;
     }
     this->classes_counter += numOfClasses;
     return (StatusType)insert_result;
 }
 
-void printCourseNode(avlNode<courseNode> *node)
+void printCourseNode2(avlNode<courseNode> *node)
 {
     std::cout << "=========================" << std::endl;
     std::cout << "left child of: " << node->getValue()->getId() << " is: " << (node->getLeft() ? node->getLeft()->getValue()->getId() : -1) << std::endl;
@@ -38,15 +40,33 @@ void printCourseNode(avlNode<courseNode> *node)
     std::cout << "=========================" << std::endl;
 }
 
+void printCourseNode2(avlNode<classNode> *node)
+{
+    std::cout << "=========================" << std::endl;
+    std::cout << "left child of: " << node->getValue()->getClassId() << " is: " << (node->getLeft() ? node->getLeft()->getValue()->getClassId() : -1) << std::endl;
+    std::cout << "Right child of: " << node->getValue()->getClassId() << " is: " << (node->getRight() ? node->getRight()->getValue()->getClassId() : -1) << std::endl;
+    std::cout << "parent of: " << node->getValue()->getClassId() << " is: " << (node->getParent() ? node->getParent()->getValue()->getClassId() : -1) << std::endl;
+    if (node->getParent())
+    {
+        if (node->isLeftChild())
+            std::cout << node->getValue()->getClassId() << " is left child" << std::endl;
+        else
+            std::cout << node->getValue()->getClassId() << " is right child" << std::endl;
+    }
+    std::cout << "=========================" << std::endl;
+}
+
 StatusType courseManager::RemoveCourse(int courseID)
 {
-    if (courseID <= 0){
+    if (courseID <= 0)
+    {
         return INVALID_INPUT;
     }
     courseNode searching_course_template;
     searching_course_template.setId(courseID);
     avlNode<courseNode> *course_pointer = find(this->getCourses()->getRoot(), searching_course_template);
-    if (!course_pointer){
+    if (!course_pointer)
+    {
         return FAILURE;
     }
     int number_of_classes = course_pointer->getValue()->getNumOfClasses();
@@ -59,7 +79,7 @@ StatusType courseManager::RemoveCourse(int courseID)
     avlTreeResult_t remove_result = this->getCourses()->remove((course_pointer->getValue()));
     if (remove_result == AVL_TREE_SUCCESS)
     {
-       
+
         this->classes_counter -= number_of_classes;
     }
     return (StatusType)remove_result;
@@ -91,7 +111,8 @@ StatusType courseManager::TimeViewed(int courseID, int classID, int *timeViewed)
 
 StatusType courseManager::WatchClass(int courseID, int classID, int time)
 {
-    if (courseID <= 0 || classID < 0 || time <= 0){
+    if (courseID <= 0 || classID < 0 || time <= 0)
+    {
         return INVALID_INPUT;
     }
     courseNode temp_course;
@@ -102,7 +123,8 @@ StatusType courseManager::WatchClass(int courseID, int classID, int time)
         return FAILURE;
     }
     int num_of_classes = wanted_course->getValue()->getNumOfClasses();
-    if (classID + 1 > num_of_classes){
+    if (classID + 1 > num_of_classes)
+    {
         return INVALID_INPUT;
     }
     avlNode<classNode> *ptr = wanted_course->getValue()->getClassPointer(classID);
@@ -120,7 +142,9 @@ StatusType courseManager::replaceClass(avlNode<classNode> *ptr, int courseID, in
         temp = new_class;
         twListNode<int> *node_to_remove = course->getValue()->getClassNodePointer(classID);
         if (course->getValue()->getList()->remove(node_to_remove) != TW_LIST_SUCCESS)
+        {
             return (StatusType)TW_LIST_FAILURE;
+        }
     }
     else
     {
@@ -129,12 +153,15 @@ StatusType courseManager::replaceClass(avlNode<classNode> *ptr, int courseID, in
             return (StatusType)AVL_TREE_OUT_OF_MEMORY;
         avlTreeResult_t remove_old_class_result = this->getClasses()->remove((ptr->getValue()));
         if (remove_old_class_result != AVL_TREE_SUCCESS)
+        {
             return (StatusType)remove_old_class_result;
+        }
         temp = new_class;
     }
     avlTreeResult_t insert_class_result = this->getClasses()->insert(temp);
     if (insert_class_result != AVL_TREE_SUCCESS)
         return (StatusType)insert_class_result;
+
     else
     {
         avlNode<classNode> *class_pointer = find(this->getClasses()->getRoot(), temp);

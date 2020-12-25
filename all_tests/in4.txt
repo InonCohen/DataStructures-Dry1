@@ -11,7 +11,6 @@ AddCourse 236319 13
 RemoveCourse 104293
 AddCourse -31 13
 AddCourse 13 16
-TimeViewed 13 1
 AddCourse 44252 52
 AddCourse 16 26
 RemoveCourse 104022
@@ -19,7 +18,6 @@ AddCourse 104095 13
 AddCourse 0 26
 AddCourse 15 52
 AddCourse 0 -12
-TimeViewed 13 1
 RemoveCourse 104293
 AddCourse -31 -12
 AddCourse 12 16
@@ -28,29 +26,19 @@ AddCourse 104293 13
 RemoveCourse 44252
 AddCourse 15 52
 AddCourse 104095 26
-TimeViewed 13 1
 AddCourse -31 -12
 AddCourse 12 26
 RemoveCourse 44252
 AddCourse 104293 -12
 AddCourse 12 40
-TimeViewed 13 1
 AddCourse 44252 52
 AddCourse 16 13
 RemoveCourse 14
 AddCourse 17 13
-TimeViewed 13 1
 AddCourse 17 52
-TimeViewed 13 1
 AddCourse 13 13
-TimeViewed 13 1
 AddCourse 104022 16
-TimeViewed 12 1
-GetMostViewedClasses 17
 RemoveCourse 15
-TimeViewed 13 1
-TimeViewed 13 1
-TimeViewed 12 1
 GetMostViewedClasses 17
 GetMostViewedClasses 0
 WatchClass 104022 3 24
