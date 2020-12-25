@@ -3,20 +3,11 @@
 
 #include "avl_node.hpp"
 
-// typedef enum StatusType_t
-// {
-//     ALLOCATION_ERROR,
-//     INVALID_INPUT,
-//     SUCCESS,
-//     FAILURE
-// } StatusType_t;
-
 class classNode
 {
 private:
     const int course_id;
     const int class_id;
-    // avlNode<courseNode> *parent;
     void *parent;
     int time;
 

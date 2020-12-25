@@ -6,25 +6,6 @@ courseNode::courseNode(const int courseID, const int numOfClasses) :
         zero_views_node_pointers(new twListNode<int> *[numOfClasses]),
         zero_views_classes(new twList<int>())
 {
-/* avlNode<classNode> **new_classes_pointers_array = new avlNode<classNode> *[numOfClasses];
-// if (!new_classes_pointers_array)
-//     return NULL;
-// twListNode<int>** new_zero_views_node_pointers = new twListNode<int> *[numOfClasses];
-// if (!new_zero_views_node_pointers)
-// {
-//     delete[] new_classes_pointers_array;
-//     return NULL;
-// }
-// twList<int>* new_zero_views_classes = new twList<int>();
-// if (!new_zero_views_classes)
-// {
-//     delete[] new_classes_pointers_array;
-//     delete[] new_zero_views_node_pointers;
-//     return NULL;
-// }
-// this->classes_pointers_array = new_classes_pointers_array;
-// this->zero_views_classes = new_zero_views_classes;
-// this->zero_views_node_pointers = new_zero_views_node_pointers; */
     for (int i = 0; i < this->num_of_classes; i++)
     {
         *(this->classes_pointers_array + i) = NULL;
@@ -38,36 +19,6 @@ courseNode::courseNode():
         zero_views_node_pointers(new twListNode<int> *[1]),
         zero_views_classes(new twList<int>())
 {}
-
-
-// courseNode::courseNode(const courseNode &other) : course_id(other.courseID), num_of_classes(other.numOfClasses),
-//         classes_pointers_array(new avlNode<classNode> *[other.numOfClasses]),
-//         zero_views_node_pointers(new twListNode<int> *[other.numOfClasses]),
-//         zero_views_classes(new twList<int>()){
-//     for (int i = 0; i < this->num_of_classes; i++)
-//     {
-//         *(this->classes_pointers_array + i) = *(other.getPointersArray() + i);
-//     }
-//     linkedListRooms *new_zero_views_classes = new linkedListRooms(other->getList());
-//     if (!new_zero_views_classes)
-//     {
-//         delete[] new_classes_pointers_array;
-//         return NULL;
-//     }
-//     listNode **new_zero_views_node_pointers = new listNode *[other.getNumOfClasses()];
-//     if (!new_zero_views_node_pointers)
-//     {
-//         delete[] new_classes_pointers_array;
-//         delete[] new_zero_views_classes;
-//         return NULL;
-//     }
-//     listNode* head = this->new_zero_views_classes->getHead();
-//     for (int i = 0; i < this->num_of_classes; i++)
-//     {
-//         *(this->zero_views_node_pointers + i) = head;
-//         head = head->getNext();
-//     }
-// }
 
 courseNode::~courseNode()
 {
