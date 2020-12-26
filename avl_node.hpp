@@ -42,6 +42,12 @@ T* avlNode<T>::getValue()
 }
 
 template <class T>
+void avlNode<T>::setValue(T* const value)
+{
+    this->data = value;
+}
+
+template <class T>
 const T* avlNode<T>::getValue() const
 {
     return this->data;

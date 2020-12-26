@@ -4,11 +4,11 @@ courseNode::courseNode(const int courseID, const int numOfClasses) :
         course_id(courseID), num_of_classes(numOfClasses),
         classes_pointers_array(new avlNode<classNode> *[numOfClasses]),
         zero_views_node_pointers(new twListNode<int> *[numOfClasses]),
-        zero_views_classes(new twList<int>())
+        zero_views_classes(new twList<int>(courseID))
 {
     for (int i = 0; i < this->num_of_classes; i++)
     {
-        *(this->classes_pointers_array + i) = NULL;
+        *(this->classes_pointers_array + i) = nullptr;
         this->zero_views_classes->addLast(i);
         *(this->zero_views_node_pointers + i) = this->zero_views_classes->getTail()->getPrev();
     }

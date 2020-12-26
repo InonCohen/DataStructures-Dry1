@@ -1,11 +1,13 @@
 #include "data_structure.h"
 
-courseManager::courseManager() : courses(new avlTree<courseNode>()), classes(new avlTree<classNode>()) {}
+courseManager::courseManager() : courses(new avlTree<courseNode>()), classes(new avlTree<classNode>()),
+                                 lists(new avlTree<twList<int>>()) {}
 
 courseManager::~courseManager()
 {
     delete courses;
     delete classes;
+    delete lists;
 }
 
 StatusType courseManager::AddCourse(int courseID, int numOfClasses)
@@ -15,11 +17,15 @@ StatusType courseManager::AddCourse(int courseID, int numOfClasses)
         return INVALID_INPUT;
     }
     courseNode *new_course = new courseNode(courseID, numOfClasses);
+    if (!new_course)
+        return (StatusType)AVL_TREE_OUT_OF_MEMORY;
     avlTreeResult_t insert_result = this->getCourses()->insert(new_course);
     if (insert_result != AVL_TREE_SUCCESS)
     {
         return (StatusType)insert_result;
     }
+    avlNode<courseNode> *course_pointer = find(this->getCourses()->getRoot(), new_course);
+    this->getLists()->insert(course_pointer->getValue()->getList());
     this->classes_counter += numOfClasses;
     return (StatusType)insert_result;
 }
@@ -74,14 +80,17 @@ StatusType courseManager::RemoveCourse(int courseID)
     {
         avlNode<classNode> *class_to_remove = *(course_pointer->getValue()->getPointersArray() + i);
         if (class_to_remove)
+        {
             this->getClasses()->remove(class_to_remove->getValue());
+        }
     }
+    this->getLists()->removeWOFreeing(course_pointer->getValue()->getList());
     avlTreeResult_t remove_result = this->getCourses()->remove((course_pointer->getValue()));
     if (remove_result == AVL_TREE_SUCCESS)
     {
-
         this->classes_counter -= number_of_classes;
     }
+
     return (StatusType)remove_result;
 }
 
@@ -136,32 +145,32 @@ StatusType courseManager::replaceClass(avlNode<classNode> *ptr, int courseID, in
     classNode *temp;
     if (!ptr)
     {
-        classNode *new_class = new classNode(courseID, classID, course, time);
+        classNode *new_class = new classNode(courseID, classID, (void *)course, time);
         if (!new_class)
             return (StatusType)AVL_TREE_OUT_OF_MEMORY;
         temp = new_class;
         twListNode<int> *node_to_remove = course->getValue()->getClassNodePointer(classID);
         if (course->getValue()->getList()->remove(node_to_remove) != TW_LIST_SUCCESS)
-        {
             return (StatusType)TW_LIST_FAILURE;
-        }
+        if (course->getValue()->getList()->size() == 0)
+            this->getLists()->removeWOFreeing(course->getValue()->getList());
     }
     else
     {
-        classNode *new_class = new classNode(ptr->getValue()->getCourseId(), ptr->getValue()->getClassId(), (avlNode<courseNode> *)ptr->getValue()->getParentPointer(), ptr->getValue()->getTime() + time);
+        classNode *new_class = new classNode(ptr->getValue()->getCourseId(), ptr->getValue()->getClassId(), /*(avlNode<courseNode> *)*/ptr->getValue()->getParentPointer(), ptr->getValue()->getTime() + time);
         if (!new_class)
             return (StatusType)AVL_TREE_OUT_OF_MEMORY;
         avlTreeResult_t remove_old_class_result = this->getClasses()->remove((ptr->getValue()));
         if (remove_old_class_result != AVL_TREE_SUCCESS)
-        {
             return (StatusType)remove_old_class_result;
-        }
+
         temp = new_class;
     }
     avlTreeResult_t insert_class_result = this->getClasses()->insert(temp);
     if (insert_class_result != AVL_TREE_SUCCESS)
+    {
         return (StatusType)insert_class_result;
-
+    }
     else
     {
         avlNode<classNode> *class_pointer = find(this->getClasses()->getRoot(), temp);
@@ -171,33 +180,18 @@ StatusType courseManager::replaceClass(avlNode<classNode> *ptr, int courseID, in
 
 void copyNodeToArrays(avlNode<classNode> *node, int *courses, int *classes, int index)
 {
-    // std::cout << "!!!!Class ID: " << node->getValue()->getClassId() << std::endl;
-    // std::cout << "!!!!Course ID: " << node->getValue()->getCourseId() << std::endl;
     courses[index] = node->getValue()->getCourseId();
     classes[index] = node->getValue()->getClassId();
 }
 
-void copyEmptyClassesToArray(avlNode<courseNode> *node, int *courses, int *classes, int *index_address, int classes_with_zero_views)
+void copyEmptyClassesToArray(avlNode<twList<int>> *node, int *courses, int *classes, int *index_address, int classes_with_zero_views)
 {
-    twListNode<int> *head = node->getValue()->getList()->getHead();
-    twListNode<int> *tail = node->getValue()->getList()->getTail();
-    // std::cout << "Course ID: " << node->getValue()->getId() << std::endl;
-    // std::cout << *index_address << std::endl;
-    if (!head)
-        return;
-
-    // twListNode<int> *head_copy = head;
-    // while (head_copy->getNext() != tail)
-    // {
-    //     head_copy = head_copy->getNext();
-    //     std::cout << head_copy->getValue() << std::endl;
-    // }
+    twListNode<int> *head = node->getValue()->getHead();
+    twListNode<int> *tail = node->getValue()->getTail();
     while (head->getNext() != tail && (classes_with_zero_views - *index_address))
     {
         head = head->getNext();
-        // std::cout << "Course ID: " << node->getValue()->getId() << std::endl;
-        courses[*index_address] = node->getValue()->getId();
-        // std::cout << "Class id:  " << head->getValue() << std::endl;
+        courses[*index_address] = node->getValue()->getKey();
         classes[*index_address] = head->getValue();
         (*index_address)++;
     }
@@ -208,18 +202,16 @@ StatusType courseManager::GetMostViewedClasses(int numOfClasses, int *courses, i
     // std::cout << this->classes_counter << std::endl;
     // int * temp_courses = courses;
     if (numOfClasses <= 0)
-    {
         return INVALID_INPUT;
-    }
+
     if (this->classes_counter < numOfClasses)
         return FAILURE;
 
     int classes_with_zero_views = this->getClasses()->reverseInOrder(numOfClasses, copyNodeToArrays, courses, classes);
-    // std::cout << "classes with 0 views should be add to array: " << classes_with_zero_views << std::endl;
 
     if (classes_with_zero_views == 0)
         return SUCCESS;
 
-    this->getCourses()->nonRecursiveInOrder(classes_with_zero_views, copyEmptyClassesToArray, courses + numOfClasses - classes_with_zero_views, classes + numOfClasses - classes_with_zero_views);
+    this->getLists()->nonRecursiveInOrder(classes_with_zero_views, copyEmptyClassesToArray, courses + numOfClasses - classes_with_zero_views, classes + numOfClasses - classes_with_zero_views);
     return SUCCESS;
 }

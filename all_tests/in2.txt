@@ -1,5 +1,5 @@
 Init
-AddCourse 14 40
+AddCourse 14 50
 AddCourse -31 16
 AddCourse 44252 40
 AddCourse 236319 0

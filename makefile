@@ -4,7 +4,7 @@ OBJS = main.o class_node.o course_node.o data_structure.o library.o #avl_node.o 
 HFLS = main.h avl_node.h avl_tree.h 
 CPPFLS = main.cpp
 HPPFLS = avl_node.hpp avl_tree.hpp
-COMP_FLAG = -std=c++11  -Wall -g -Werror -pedantic-errors  -g -fPIC
+COMP_FLAG = -std=c++11  -Wall -g #-Werror -pedantic-errors  -g -fPIC
 DEBUG_FLAG = -DNDEBUG
 
 $(EXEC): $(OBJS)

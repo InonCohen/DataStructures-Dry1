@@ -28,9 +28,11 @@ public:
     ~avlTree();
     avlTreeResult_t insert(T* const value);
     avlTreeResult_t remove(T* const value);
+    avlTreeResult_t removeWOFreeing(T *const value);
     void treeBalance(avlNode<T> *root);
     void rotateLeft(avlNode<T> *root);
     void rotateRight(avlNode<T> *root);
+    void cleanTree();
     avlNode<T> *getRoot() const { return this->root; }
     void inOrder(avlNode<T> *root, void (*function)(avlNode<T> *)) const; // Left, this, Right
     int nonRecursiveInOrder(int m, void (*function)(avlNode<T> *)) const; // Left, this, Right

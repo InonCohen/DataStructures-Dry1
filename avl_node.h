@@ -26,6 +26,7 @@ public:
     avlNode *getParent();
     T* getValue();
     const T* getValue() const;
+    void setValue(T* const value);
     void setLeft(avlNode<T> *new_left);
     void setRight(avlNode<T> *new_right);
     void setParent(avlNode<T> *new_parent);

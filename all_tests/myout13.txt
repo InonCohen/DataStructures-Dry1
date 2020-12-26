@@ -464,6 +464,7 @@ WatchClass: SUCCESS
 WatchClass: SUCCESS
 WatchClass: FAILURE
 WatchClass: SUCCESS
-RemoveCourse: SUCCESS
 WatchClass: SUCCESS
+WatchClass: SUCCESS
+RemoveCourse: SUCCESS
 quit done.

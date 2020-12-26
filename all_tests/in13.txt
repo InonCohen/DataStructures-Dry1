@@ -5,7 +5,7 @@ AddCourse 17 40
 AddCourse 234218 13
 RemoveCourse 15
 AddCourse -31 -12
-AddCourse 236319 13
+AddCourse 236319 20
 AddCourse 44252 0
 AddCourse -31 16
 RemoveCourse -31
@@ -238,6 +238,7 @@ WatchClass 44252 4 14
 WatchClass 14 14 9
 WatchClass 15 31 19
 WatchClass 104095 14 1
+WatchClass 236319 4 100
+WatchClass 236319 5 100
 RemoveCourse 234218
-WatchClass 236319 4 25
 Quit

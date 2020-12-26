@@ -11,7 +11,6 @@
 //#define BIG_EQUAL '#'
 //#define SMALL_EQUAL '%'
 
-
 typedef enum twListResult_t
 {
     TW_LIST_OUT_OF_MEMORY = -2,
@@ -21,12 +20,16 @@ typedef enum twListResult_t
 } twListResult_t;
 
 template <class T>
-class twList {
+class twList
+{
 private:
     twListNode<T> *head;
     twListNode<T> *tail;
     int num_of_nodes = 0;
+    int key;
+
 public:
+    twList<T>(int key);
     twList<T>();
 
     /**
@@ -67,27 +70,33 @@ public:
           */
     const int size() const;
 
-    twListNode<T>* getHead() {
+    twListNode<T> *getHead()
+    {
         if (num_of_nodes == 0)
             return NULL;
         return head;
     };
 
-    twListNode<T>* getTail(){
+    twListNode<T> *getTail()
+    {
         if (num_of_nodes == 0)
             return NULL;
         return tail;
     };
 
+    const int getKey() { return this->key; }
+    void setKey(int new_key) { this->key = new_key; }
+
+
     twListResult_t addFirst(const T &to_add);
 
     twListResult_t addLast(const T &to_add);
 
-//    twListResult_t addFirst(twListNode<T> &to_add);
-//
-//    twListResult_t addLast(twListNode<T>& to_add);
+    //    twListResult_t addFirst(twListNode<T> &to_add);
+    //
+    //    twListResult_t addLast(twListNode<T>& to_add);
 
-    twListResult_t remove(twListNode<T>* to_remove);
+    twListResult_t remove(twListNode<T> *to_remove);
 
     twList<T> clone();
 
@@ -106,77 +115,97 @@ public:
          *  T operator of logical comparison (matching operator for every function):
          * (==,!=,<=,>=,<,>)
     */
-//    twList<bool> operator==(T to_compare);
-//    twList<bool> operator!=(T to_compare);
-//    twList<bool> operator<=(T to_compare);
-//    twList<bool> operator>=(T to_compare);
-//    twList<bool> operator<(T to_compare);
-//    twList<bool> operator>(T to_compare);
-
+       bool operator==(const twList<T> &twList);
+       bool operator!=(const twList<T> &twList);
+       bool operator<=(const twList<T> &twList);
+       bool operator>=(const twList<T> &twList);
+       bool operator<(const twList<T> &twList);
+       bool operator>(const twList<T> &twList);
 };
 
-    //implementation of twList class functions//
+//implementation of twList class functions//
+template <class T>
+twList<T>::twList() : head(nullptr), tail(nullptr)
+{
+    twListNode<T> *make_head = new twListNode<T>();
+    twListNode<T> *make_tail = new twListNode<T>();
+    head = make_head;
+    tail = make_tail;
+    head->setNext(tail);
+    tail->setPrev(head);
+}
 
-    template <class T>
-    twList<T>::twList():head(nullptr),tail(nullptr){
-        twListNode<T>* make_head= new twListNode<T>();
-        twListNode<T>* make_tail= new twListNode<T>();
-        head=make_head;
-        tail=make_tail;
-        head->setNext(tail);
-        tail->setPrev(head);
+
+template <class T>
+twList<T>::twList(int key) : head(nullptr), tail(nullptr), key(key)
+{
+    twListNode<T> *make_head = new twListNode<T>();
+    twListNode<T> *make_tail = new twListNode<T>();
+    head = make_head;
+    tail = make_tail;
+    head->setNext(tail);
+    tail->setPrev(head);
+}
+
+template <class T>
+twList<T>::twList(const twList &tw_list) : head(tw_list.head.clone()), tail(tw_list.tail.clone()), num_of_nodes(tw_list.num_of_nodes)
+{
+    twListNode<T> *iter = tw_list.getHead();
+    while (num_of_nodes && iter != tw_list.getTail())
+    {
+        iter = (*iter).getNext();
+        twListNode<T> *new_node = new twListNode<T>;
+        new_node = (*iter).clone();
+        addLast(new_node);
     }
+    this->key = tw_list.key;
+}
 
-    template <class T>
-    twList<T>::twList(const twList &tw_list): head(tw_list.head.clone()),tail(tw_list.tail.clone()),num_of_nodes(tw_list.num_of_nodes){
-        twListNode<T>* iter=tw_list.getHead();
-        while(num_of_nodes&&iter!=tw_list.getTail()){
-            iter=(*iter).getNext();
-            twListNode<T>* new_node=new twListNode<T>;
-            new_node=(*iter).clone();
-            addLast(new_node);
-        }
+template <class T>
+twList<T>::~twList()
+{
+    twListNode<T> *from = head;
+    while ((*from).getNext() != tail)
+    {
+        twListNode<T> *curr = from->getNext();
+        from->setNext(curr->getNext());
+        from->getNext()->setPrev(from);
+        delete (curr);
     }
+    delete (tail);
+    delete (head);
+}
 
-    template <class T>
-    twList<T>::~twList() {
-        twListNode<T>* from=head;
-        while((*from).getNext()!=tail){
-            twListNode<T>* curr=from->getNext();
-            from->setNext(curr->getNext());
-            from->getNext()->setPrev(from);
-            delete (curr);
-        }
-        delete (tail);
-        delete (head);
-    }
-
-
-    template <class T>
-    twList<T>& twList<T>::operator=(const twList<T>& twList_t) {
-        if (this == &twList_t) {
-            return *this;
-        }
-        twListNode<T>* from=head, to=tail;
-        while(from!=to-1){
-            from=(*from).getNext();
-            delete (*from).getPrev();
-        }
-        delete from;
-        head=twList_t.head.clone();
-        tail=twList_t.tail.clone();
-        from=twList_t.head;
-        from=(*from).getNext();
-        to=twList_t.tail;
-        while(from!=to){
-            twListNode<T>* temp= new twListNode<T>;
-            temp=(*from).clone();
-            addLast(temp);
-            from=(*from).getNext();
-        }
+template <class T>
+twList<T> &twList<T>::operator=(const twList<T> &twList_t)
+{
+    if (this == &twList_t)
+    {
         return *this;
     }
+    twListNode<T> *from = head, to = tail;
+    while (from != to - 1)
+    {
+        from = (*from).getNext();
+        delete (*from).getPrev();
+    }
+    delete from;
+    head = twList_t.head.clone();
+    tail = twList_t.tail.clone();
+    from = twList_t.head;
+    from = (*from).getNext();
+    to = twList_t.tail;
+    while (from != to)
+    {
+        twListNode<T> *temp = new twListNode<T>;
+        temp = (*from).clone();
+        addLast(temp);
+        from = (*from).getNext();
+    }
+    this->key = twList_t.key;
 
+    return *this;
+}
 
 /*    template <class T>
     twList<bool> twList<T>::operator==(T to_compare) {
@@ -208,10 +237,11 @@ public:
 //        return compareMatrix(*this, to_compare, BIGGER);
    }
 */
-    template <class T>
-    const int twList<T>::size() const {
-        return this->num_of_nodes;
-    }
+template <class T>
+const int twList<T>::size() const
+{
+    return this->num_of_nodes;
+}
 
 /*   template <class T>
 /  twListResult_t twList<T>::addFirst(twListNode<T>& to_add){
@@ -228,18 +258,20 @@ public:
        return TW_LIST_SUCCESS;
    }*/
 
-
 template <class T>
-twListResult_t twList<T>::addFirst(const T& to_add){
-    if (!this){
+twListResult_t twList<T>::addFirst(const T &to_add)
+{
+    if (!this)
+    {
         return TW_LIST_FAILURE;
     }
 //    if (!to_add){
-//        return TW_LIST_INVALID_INPUT;
-//    }
-    twListNode<T>* curr_first=head->getNext();
-    twListNode<T>* new_node= new twListNode<T>(to_add, head, curr_first);
-    if(!new_node){
+    //        return TW_LIST_INVALID_INPUT;
+    //    }
+    twListNode<T> *curr_first = head->getNext();
+    twListNode<T> *new_node = new twListNode<T>(to_add, head, curr_first);
+    if (!new_node)
+    {
         return TW_LIST_OUT_OF_MEMORY;
     }
     head->setNext(new_node);
@@ -248,7 +280,7 @@ twListResult_t twList<T>::addFirst(const T& to_add){
     return TW_LIST_SUCCESS;
 }
 
-   /* template <class T>
+/* template <class T>
     twListResult_t twList<T>::addLast(twListNode<T>& to_add){
         if (!this){
             return TW_LIST_FAILURE;
@@ -260,16 +292,19 @@ twListResult_t twList<T>::addFirst(const T& to_add){
         (*curr_last).setNext(new_last);
         num_of_nodes++;
         return TW_LIST_SUCCESS;
-    }*/
+}*/
 
 template <class T>
-twListResult_t twList<T>::addLast(const T& to_add){
-    if (!this){
+twListResult_t twList<T>::addLast(const T &to_add)
+{
+    if (!this)
+    {
         return TW_LIST_FAILURE;
     }
-    twListNode<T>* curr_last=tail->getPrev();
-    twListNode<T>* new_node= new twListNode<T>(to_add, curr_last, tail);
-    if(!new_node){
+    twListNode<T> *curr_last = tail->getPrev();
+    twListNode<T> *new_node = new twListNode<T>(to_add, curr_last, tail);
+    if (!new_node)
+    {
         return TW_LIST_OUT_OF_MEMORY;
     }
     tail->setPrev(new_node);
@@ -278,46 +313,50 @@ twListResult_t twList<T>::addLast(const T& to_add){
     return TW_LIST_SUCCESS;
 }
 
-    template<class T>
-    twListResult_t twList<T>::remove(twListNode<T>* to_remove){
-        if (!this){
-            return TW_LIST_FAILURE;
-        }
-        if (!to_remove){
-            return TW_LIST_INVALID_INPUT;
-        }
-        twListNode<T>* curr_prev=to_remove->getPrev();
-        twListNode<T>* curr_next=to_remove->getNext();
-        curr_prev->setNext(curr_next);
-        curr_next->setPrev(curr_prev);
-        delete to_remove;
-        num_of_nodes--;
-        return TW_LIST_SUCCESS;
+template <class T>
+twListResult_t twList<T>::remove(twListNode<T> *to_remove)
+{
+    if (!this)
+    {
+        return TW_LIST_FAILURE;
     }
-
-
-
-    template <class T>
-    std::ostream& operator<<(std::ostream& os, twList<T>& to_print) {
-        os<<to_print.printList();
-        return os;
+    if (!to_remove)
+    {
+        return TW_LIST_INVALID_INPUT;
+    }
+    twListNode<T> *curr_prev = to_remove->getPrev();
+    twListNode<T> *curr_next = to_remove->getNext();
+    curr_prev->setNext(curr_next);
+    curr_next->setPrev(curr_prev);
+    delete to_remove;
+    num_of_nodes--;
+    return TW_LIST_SUCCESS;
 }
-    template<class T>
-    std::string twList<T>::printList() {
-        std::string list_str;
-        twListNode<T>* it=head;
-        for (int i=0;i<num_of_nodes;i++){
-            it=(*it).getNext();
-            list_str+=std::to_string((*it).getVal());
-            if(i!=num_of_nodes-1){
-                list_str+= " - ";
-            }
+
+template <class T>
+std::ostream &operator<<(std::ostream &os, twList<T> &to_print)
+{
+    os << to_print.printList();
+    return os;
+}
+template <class T>
+std::string twList<T>::printList()
+{
+    std::string list_str;
+    twListNode<T> *it = head;
+    for (int i = 0; i < num_of_nodes; i++)
+    {
+        it = (*it).getNext();
+        list_str += std::to_string((*it).getVal());
+        if (i != num_of_nodes - 1)
+        {
+            list_str += " - ";
         }
-        return list_str;
+    }
+    return list_str;
 }
 
-
-    /**
+/**
              // std::ostream& operator<<(std::ostream &os, const twList<T>& twList)//:
               output operator for twList<T>
               * Template Requirements:
@@ -325,14 +364,46 @@ twListResult_t twList<T>::addLast(const T& to_add){
               * - T() destructor.
               * - operator output for T << .
               */
-    template <class T>
-    std::ostream& operator<<(std::ostream &os, const twList<T>& twList) {
-        return printList(os, twList.begin(),twList.end());
-    }
+template <class T>
+std::ostream &operator<<(std::ostream &os, const twList<T> &twList)
+{
+    return printList(os, twList.begin(), twList.end());
+}
 
-   
+template <class T>
+bool twList<T>::operator<(const twList<T> &twList)
+{
+    return (this->key < twList.key);
+}
 
+template <class T>
+bool twList<T>::operator>(const twList<T> &twList)
+{
+    return (this->key > twList.key);
+}
 
+template <class T>
+bool twList<T>::operator==(const twList<T> &twList)
+{
+    return (this->key == twList.key);
+}
 
+template <class T>
+bool twList<T>::operator!=(const twList<T> &twList)
+{
+    return (this->key != twList.key);
+}
+
+template <class T>
+bool twList<T>::operator<=(const twList<T> &twList)
+{
+    return (this->key <= twList.key);
+}
+
+template <class T>
+bool twList<T>::operator>=(const twList<T> &twList)
+{
+    return (this->key >= twList.key);
+}
 
 #endif //PARTB_PARTB_H
